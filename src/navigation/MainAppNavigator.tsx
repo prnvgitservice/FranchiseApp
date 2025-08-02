@@ -2,6 +2,7 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Dashboard from '../screens/Dashboard';
 import Lohi from '../screens/Lohi';
+import ProfileScreen from '../screens/ProfileScreen';
 import { MainAppStackParamList } from './types';
 
 const Stack = createNativeStackNavigator<MainAppStackParamList>();
@@ -33,6 +34,14 @@ export default function MainAppNavigator() {
         component={Lohi} 
         options={{ 
           title: "Lohi Screen",
+          headerShown: true
+        }} 
+      />
+      <Stack.Screen 
+        name="Profile" 
+        component={ProfileScreen} 
+        options={{ 
+          title: "Profile",
           headerShown: true
         }} 
       />

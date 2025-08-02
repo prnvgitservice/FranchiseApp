@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Pressable, Image, ScrollView, Linking } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, ScrollView, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { NavigationProp } from '../navigation/types';
 
-const FranchiseLoginForm = () => {
+const Login = () => {
   const [formData, setFormData] = useState({
     phoneNumber: '',
     password: '',
@@ -40,41 +40,15 @@ const FranchiseLoginForm = () => {
       return;
     }
 
-    // Simulate API call
     setTimeout(() => {
       setLoading(false);
-      // On successful login, navigate to main app screen
       navigation.navigate('MainApp');
     }, 1500);
   };
 
   const handleDemoLogin = () => {
-    // Demo login - directly navigate to main app
     navigation.navigate('MainApp');
   };
-
-  const handleSignUp = () => {
-    // Navigate to sign up screen
-    console.log('Sign up pressed');
-  };
-
-  // Button styles
-  const primaryButtonStyle = ({ pressed }: { pressed: boolean }) => ({
-    backgroundColor: pressed ? '#2563eb' : '#3b82f6',
-    borderRadius: 8,
-    padding: 16,
-    opacity: loading ? 0.7 : 1,
-    marginBottom: 12
-  });
-
-  const demoButtonStyle = ({ pressed }: { pressed: boolean }) => ({
-    backgroundColor: pressed ? '#059669' : '#10b981',
-    borderRadius: 8,
-    padding: 16,
-    marginBottom: 16,
-    borderWidth: 2,
-    borderColor: '#059669'
-  });
 
   const buttonTextStyle = {
     color: 'white',
@@ -93,7 +67,6 @@ const FranchiseLoginForm = () => {
       }}
       keyboardShouldPersistTaps="handled"
     >
-      {/* Logo Header */}
       <View style={{ alignItems: 'center', marginBottom: 30 }}>
         <View style={{ 
           backgroundColor: '#1e3a8a', 
@@ -109,7 +82,6 @@ const FranchiseLoginForm = () => {
         </View>
       </View>
 
-      {/* Login Form */}
       <View style={{ 
         backgroundColor: 'white', 
         padding: 24, 
@@ -149,7 +121,6 @@ const FranchiseLoginForm = () => {
           </View>
         )}
 
-        {/* Phone Input */}
         <View style={{ marginBottom: 20 }}>
           <Text style={{ 
             fontSize: 15, 
@@ -177,7 +148,6 @@ const FranchiseLoginForm = () => {
           />
         </View>
 
-        {/* Password Input */}
         <View style={{ marginBottom: 24 }}>
           <Text style={{ 
             fontSize: 15, 
@@ -204,7 +174,7 @@ const FranchiseLoginForm = () => {
                 paddingRight: 40
               }}
             />
-            <Pressable 
+            <TouchableOpacity 
               onPress={() => setShowPassword(!showPassword)}
               style={{ position: 'absolute', right: 12, top: 14 }}
             >
@@ -213,34 +183,49 @@ const FranchiseLoginForm = () => {
                 size={20} 
                 color="#6b7280" 
               />
-            </Pressable>
+            </TouchableOpacity>
           </View>
         </View>
 
-        {/* Primary Sign In Button */}
-        <Pressable
+        <TouchableOpacity
           onPress={handleLogin}
           disabled={loading}
-          style={primaryButtonStyle}
+          style={{
+            backgroundColor: '#3b82f6',
+            borderRadius: 8,
+            padding: 16,
+            opacity: loading ? 0.7 : 1,
+            marginBottom: 12
+          }}
         >
           <Text style={buttonTextStyle}>
             {loading ? "Signing In..." : "Sign In"}
           </Text>
-        </Pressable>
+        </TouchableOpacity>
 
-        {/* Demo Login Button */}
-        <Pressable
+        <TouchableOpacity
           onPress={handleDemoLogin}
-          style={demoButtonStyle}
+          style={{
+            backgroundColor: '#ef4444',
+            borderRadius: 8,
+            padding: 16,
+            marginBottom: 16,
+            borderWidth: 2,
+            borderColor: '#dc2626',
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+            elevation: 5
+          }}
         >
           <Text style={buttonTextStyle}>
-            Demo Login
+            🚀 Demo Login
           </Text>
-        </Pressable>
+        </TouchableOpacity>
 
-        {/* Sign Up Button */}
-        <Pressable
-          onPress={handleSignUp}
+        <TouchableOpacity
+          onPress={() => console.log('Sign up pressed')}
           style={{ marginTop: 8 }}
         >
           <Text style={{ 
@@ -251,10 +236,9 @@ const FranchiseLoginForm = () => {
           }}>
             Create New Account
           </Text>
-        </Pressable>
+        </TouchableOpacity>
       </View>
 
-      {/* Contact Information */}
       <View style={{ 
         flexDirection: 'row', 
         justifyContent: 'center', 
@@ -271,7 +255,7 @@ const FranchiseLoginForm = () => {
         </Text>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 4 }}>
           <Icon name="phone" size={14} color="#4ade80" style={{ marginRight: 4 }} />
-          <Pressable onPress={() => Linking.openURL('tel:+9196035583369')}>
+          <TouchableOpacity onPress={() => Linking.openURL('tel:+9196035583369')}>
             <Text style={{ 
               color: '#3b82f6', 
               fontWeight: '500', 
@@ -279,11 +263,11 @@ const FranchiseLoginForm = () => {
             }}>
               +91 96035583369
             </Text>
-          </Pressable>
+          </TouchableOpacity>
         </View>
       </View>
     </ScrollView>
   );
 };
 
-export default FranchiseLoginForm;
+export default Login; 

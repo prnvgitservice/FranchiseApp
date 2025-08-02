@@ -11,9 +11,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { RootStackParamList } from '../../app'; // Adjust path based on your project structure
+import { RootStackParamList } from '../navigation/types';
 
-// Define props type using RootStackParamList from App.tsx
+// Define props type using RootStackParamList from navigation types
 type LoginScreenProps = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
@@ -36,7 +36,8 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   };
 
   const handleSignUp = () => {
-    navigation.navigate('SignUp');
+    // SignUp screen not implemented yet
+    Alert.alert('Info', 'Sign Up functionality coming soon');
   };
 
   return (
@@ -52,7 +53,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
               <Image
                 source={{ uri: 'https://prnvservices.com/uploads/logo/1695377568_logo-white.png' }}
                 className="w-40 h-12"
-                resizeMode="contain bg-native"
+                resizeMode="contain"
               />
             </View>
             <Text className="text-xl font-semibold text-gray-800">Welcome Back</Text>

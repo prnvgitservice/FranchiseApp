@@ -8,6 +8,7 @@ export type RootStackParamList = {
 export type MainAppStackParamList = {
   Dashboard: undefined;
   Lohi: undefined;
+  Profile: undefined;
 };
 
 export type NavigationProp = NativeStackNavigationProp<RootStackParamList>;

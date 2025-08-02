@@ -18,6 +18,10 @@ export const navigateToLohi = (navigation: MainAppNavigationProp) => {
   navigation.navigate('Lohi');
 };
 
+export const navigateToProfile = (navigation: MainAppNavigationProp) => {
+  navigation.navigate('Profile');
+};
+
 export const goBack = (navigation: MainAppNavigationProp) => {
   navigation.goBack();
 }; 
