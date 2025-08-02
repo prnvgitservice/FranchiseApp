@@ -7,15 +7,11 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 // Define Root Stack Param List (same as in AppNavigator)
 type RootStackParamList = {
   Tabs: undefined;
-  Services: undefined;
-  Photos: undefined;
-  Reviews: undefined;
-  Transactions: undefined;
-  MySubscription: undefined;
+  Technicians: undefined;
+  FranchisePlan: undefined;
   AboutUs: undefined;
   KeyFeatures: undefined;
   AllSubscriptions: undefined;
-  Franchise: undefined;
   LeaveReview: undefined;
   Login: undefined;
 };
@@ -31,14 +27,11 @@ const MoreOptionsScreen: React.FC = () => {
   }, []);
 
   const options = [
-    { icon: 'list-outline', title: 'Services', screen: 'Services' },
-    { icon: 'image-outline', title: 'Photos', screen: 'Photos' },
-    { icon: 'star-outline', title: 'Reviews', screen: 'Reviews' },
-    { icon: 'card-outline', title: 'My Subscription', screen: 'MySubscription' },
+    { icon: 'people-outline', title: 'Technicians', screen: 'Technicians' },
+    { icon: 'card-outline', title: 'Franchise Plan', screen: 'FranchisePlan' },
     { icon: 'information-circle-outline', title: 'About us', screen: 'AboutUs' },
     { icon: 'bulb-outline', title: 'Key Features', screen: 'KeyFeatures' },
     { icon: 'pricetags-outline', title: 'All Subscriptions', screen: 'AllSubscriptions' },
-    { icon: 'business-outline', title: 'Franchise', screen: 'Franchise' },
     {
       icon: 'log-out-outline',
       title: 'Logout',

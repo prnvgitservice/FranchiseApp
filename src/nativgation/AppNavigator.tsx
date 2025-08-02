@@ -7,6 +7,10 @@ import Dashboard from '../screens/Dashboard';
 import CategoryScreen from '../screens/CategoryScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import MoreOptionsScreen from '../screens/MoreOptionsScreen';
+import EarningsScreen from '../screens/EarningsScreen';
+import AboutUsScreen from '../screens/AboutUsScreen';
+import KeyFeaturesScreen from '../screens/KeyFeatures';
+import TechniciansScreen from '../screens/TechniciansScreen';
 // import DashboardScreen from '../screens/DashboardScreen';
 // import ProfileScreen from '../screens/ProfileScreen';
 // import CategoryScreen from '../screens/CategoryScreen';
@@ -44,7 +48,7 @@ type TabParamList = {
   Dashboard: undefined;
   Profile: undefined;
   Category: undefined;
-  Transactions: undefined;
+  Earnings: undefined;
   More: undefined;
 };
 
@@ -64,11 +68,11 @@ const TabNavigator: React.FC = () => {
             iconName = focused ? 'grid' : 'grid-outline';
           } else if (route.name === 'Profile') {
             iconName = focused ? 'person' : 'person-outline';
-          } else if (route.name === 'Transactions') {
-            iconName = focused ? 'cash' : 'cash-outline';
-          }else if (route.name === 'Category') {
+          } else if (route.name === 'Category') {
             iconName = focused ? 'list' : 'list-outline';
-          } else if (route.name === 'More') {
+          } else if (route.name === 'Earnings') {
+            iconName = focused ? 'cash' : 'cash-outline';
+          }else if (route.name === 'More') {
             iconName = focused ? 'menu' : 'menu-outline';
           } else {
             iconName = 'ellipse';
@@ -93,6 +97,7 @@ const TabNavigator: React.FC = () => {
       <Tab.Screen name="Dashboard" component={Dashboard} options={{ title: 'Dashboard' }} />
       <Tab.Screen name="Category" component={CategoryScreen} options={{ title: 'Category' }} />
       <Tab.Screen name="Profile" component={ProfileScreen} options={{ title: 'Profile' }} />
+      <Tab.Screen name="Earnings" component={EarningsScreen} options={{ title: 'Earnigs' }} />
       <Tab.Screen
         name="More"
         component={MoreOptionsScreen}
@@ -118,14 +123,14 @@ const AppNavigator: React.FC = () => {
           component={TabNavigator}
           options={{ headerShown: false }} // Hide header for tab navigator
         />
+        <Stack.Screen name="AboutUs" component={AboutUsScreen} options={{ title: 'About Us' }} />
+        <Stack.Screen name="KeyFeatures" component={KeyFeaturesScreen} options={{ title: 'Key Features' }} />
+        <Stack.Screen name="Technicians" component={TechniciansScreen} options={{ title: 'Technicians' }} />
         {/* <Stack.Screen name="Services" component={ServicesScreen} options={{ title: 'Services' }} />
-        <Stack.Screen name="Photos" component={PhotosScreen} options={{ title: 'Photos' }} />
         <Stack.Screen name="Reviews" component={ReviewsScreen} options={{ title: 'Reviews' }} />
         <Stack.Screen name="MySubscription" component={MySubscriptionScreen} options={{ title: 'My Subscription' }} />
         <Stack.Screen name="AllSubscriptions" component={AllSubscriptionsScreen} options={{ title: 'All Subscriptions' }} />
         <Stack.Screen name="SubscriptionDetails" component={ViewPlanCard} options={{ title: 'Subscription Details' }} />
-        <Stack.Screen name="AboutUs" component={AboutUsScreen} options={{ title: 'About Us' }} />
-        <Stack.Screen name="KeyFeatures" component={KeyFeaturesScreen} options={{ title: 'Key Features' }} />
         <Stack.Screen name="LeaveReview" component={CreateReviewScreen} options={{ title: 'Leave a Review' }} />
         <Stack.Screen name="Franchise" component={FranchiseScreen} options={{ title: 'Franchise' }} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'Login' }} />  */}
