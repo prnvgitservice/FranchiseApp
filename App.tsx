@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
-import AppNavigator from './src/nativgation/AppNavigator';
+import AppNavigator from './src/navigation/AppNavigator';
 import LoginScreen from './src/screens/LoginScreen';
 import './global.css'
 import { SafeAreaFrameContext, SafeAreaView } from 'react-native-safe-area-context';

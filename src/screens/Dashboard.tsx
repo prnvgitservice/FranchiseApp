@@ -30,10 +30,19 @@ const Dashboard = () => {
       date: '29/07/2025',
       icon: 'user',
     },
+    {
+      plan: 'Economy Plan',
+      customer: 'soujanya',
+      amount: '₹1,000',
+      date: '29/07/2025',
+      icon: 'user',
+    },
   ];
 
   const subscriptionPlans = [
-    { name: 'Platinum Plan', technicians: 1, percentage: 100, color: '#3b82f6' },
+    { name: 'Platinum Plan', technicians: 1, percentage: 33.3, color: '#3b82f6' },
+    { name: 'Economy Plan', technicians: 1, percentage: 33.3, color: '#10B981' },
+    { name: 'Glod Plan', technicians: 1, percentage: 33.3, color: '#F59E0B' },
   ];
 
   const getCurrentDate = () => {
