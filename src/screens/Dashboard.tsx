@@ -1,6 +1,5 @@
 import React from 'react'
-import { View, ScrollView, Text, TouchableOpacity } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import { View } from 'react-native'
 import DashboardCard from '../components/dashboard/DashboardCards'
 import MonthlyEarningsChart from '../components/dashboard/MonthlyEarningsChart'
 import PlansChart from '../components/dashboard/PlansChart'
