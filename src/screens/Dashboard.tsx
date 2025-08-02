@@ -1,9 +1,12 @@
 import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { MainAppNavigationProp } from '../navigation/types';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { PieChart } from 'react-native-svg-charts';
 
 const Dashboard = () => {
+  const navigation = useNavigation<MainAppNavigationProp>();
+
   const kpiData = [
     { title: 'Total Technicians', value: '1', icon: 'users', color: 'bg-blue-500' },
     { title: 'Total Subscriptions', value: '1', icon: 'credit-card', color: 'bg-green-500' },
@@ -41,13 +44,6 @@ const Dashboard = () => {
     return today.toDateString();
   };
 
-  // Pie Chart Data
-  const pieData = subscriptionPlans.map((item, index) => ({
-    value: item.percentage,
-    svg: { fill: item.color },
-    key: `pie-${index}`,
-  }));
-
   return (
     <ScrollView className="flex-1 bg-gray-100 px-4 py-6">
       {/* Header */}
@@ -59,54 +55,53 @@ const Dashboard = () => {
         </Text>
       </View>
 
-      {/* KPI Cards - 2x2 Grid */}
-      <View className="mb-4">
-        {/* First Row: Total Technicians + Total Subscriptions */}
-        <View className="flex-row space-x-4 mb-4">
-          <View className="bg-white p-4 rounded-xl shadow flex-1">
+      {/* KPI Cards - 2 per row */}
+      <View className="flex-row justify-between mb-4">
+        {kpiData.slice(0, 2).map((item, index) => (
+          <View key={index} className="bg-white p-4 rounded-xl shadow w-[48%]">
             <View className="flex-row justify-between items-center mb-2">
-              <View className="bg-blue-500 p-2 rounded-lg">
-                <Icon name="users" size={20} color="white" />
+              <View className={`${item.color} p-2 rounded-lg`}>
+                <Icon name={item.icon} size={20} color="white" />
               </View>
-              <Text className="text-2xl font-bold text-gray-800">1</Text>
+              <Text className="text-2xl font-bold text-gray-800">{item.value}</Text>
             </View>
-            <Text className="text-gray-600 text-sm">Total Technicians</Text>
+            <Text className="text-gray-600 text-sm">{item.title}</Text>
           </View>
-
-          <View className="bg-white p-4 rounded-xl shadow flex-1">
-            <View className="flex-row justify-between items-center mb-2">
-              <View className="bg-green-500 p-2 rounded-lg">
-                <Icon name="credit-card" size={20} color="white" />
-              </View>
-              <Text className="text-2xl font-bold text-gray-800">1</Text>
-            </View>
-            <Text className="text-gray-600 text-sm">Total Subscriptions</Text>
-          </View>
-        </View>
-
-        {/* Second Row: Total Earnings + Monthly Earnings */}
-        <View className="flex-row space-x-4">
-          <View className="bg-white p-4 rounded-xl shadow flex-1">
-            <View className="flex-row justify-between items-center mb-2">
-              <View className="bg-yellow-500 p-2 rounded-lg">
-                <Icon name="money" size={20} color="white" />
-              </View>
-              <Text className="text-2xl font-bold text-gray-800">₹1,000</Text>
-            </View>
-            <Text className="text-gray-600 text-sm">Total Earnings</Text>
-          </View>
-
-          <View className="bg-white p-4 rounded-xl shadow flex-1">
-            <View className="flex-row justify-between items-center mb-2">
-              <View className="bg-orange-500 p-2 rounded-lg">
-                <Icon name="line-chart" size={20} color="white" />
-              </View>
-              <Text className="text-2xl font-bold text-gray-800">₹0</Text>
-            </View>
-            <Text className="text-gray-600 text-sm">Monthly Earnings</Text>
-          </View>
-        </View>
+        ))}
       </View>
+
+      <View className="flex-row justify-between mb-4">
+        {kpiData.slice(2, 4).map((item, index) => (
+          <View key={index} className="bg-white p-4 rounded-xl shadow w-[48%]">
+            <View className="flex-row justify-between items-center mb-2">
+              <View className={`${item.color} p-2 rounded-lg`}>
+                <Icon name={item.icon} size={20} color="white" />
+              </View>
+              <Text className="text-2xl font-bold text-gray-800">{item.value}</Text>
+            </View>
+            <Text className="text-gray-600 text-sm">{item.title}</Text>
+          </View>
+        ))}
+      </View>
+
+      {/* More Button */}
+      <TouchableOpacity
+        onPress={() => navigation.navigate('MoreOptions')}
+        className="bg-gradient-to-r from-purple-600 to-pink-600 p-4 rounded-xl shadow-lg mb-4"
+      >
+        <View className="flex-row items-center justify-between">
+          <View className="flex-row items-center">
+            <View className="bg-white/20 p-2 rounded-lg mr-3">
+              <Icon name="bars" size={20} color="white" />
+            </View>
+            <View>
+              <Text className="text-white font-semibold text-lg">More Options</Text>
+              <Text className="text-white/90 text-sm">Access additional features</Text>
+            </View>
+          </View>
+          <Icon name="chevron-right" size={20} color="white" />
+        </View>
+      </TouchableOpacity>
 
       {/* Monthly Earnings */}
       <View className="bg-white p-4 rounded-xl shadow mb-4">
@@ -138,7 +133,7 @@ const Dashboard = () => {
               <View className="bg-blue-100 p-2 rounded-full mr-3">
                 <Icon name={item.icon} size={16} color="#3b82f6" />
               </View>
-              <View>
+   <View>
                 <Text className="text-gray-800 font-medium">{item.plan}</Text>
                 <Text className="text-gray-600 text-sm">{item.customer}</Text>
               </View>
@@ -151,33 +146,34 @@ const Dashboard = () => {
         ))}
       </View>
 
-      {/* Subscription Plans with Pie Chart */}
+      {/* Subscription Plans with Circular Progress */}
       <View className="bg-white p-4 rounded-xl shadow mb-6">
         <Text className="text-lg font-semibold text-gray-800 mb-4">📦 Subscription Plans</Text>
-        
         <View className="flex-row items-center justify-between">
-          {/* Pie Chart */}
-          <PieChart
-            style={{ height: 120, width: 120 }}
-            data={pieData}
-            innerRadius={40}
-            outerRadius={60}
-          />
-          
+          {/* Circular Progress */}
+          <View className="relative">
+            <View className="w-24 h-24 bg-gray-200 rounded-full items-center justify-center">
+              <View className="w-20 h-20 bg-blue-500 rounded-full items-center justify-center">
+                <Text className="text-white font-bold text-lg">100%</Text>
+              </View>
+            </View>
+          </View>
           {/* Labels */}
           <View>
             {subscriptionPlans.map((item, index) => (
               <View key={index} className="mb-2">
                 <View className="flex-row items-center mb-1">
                   <View style={{ backgroundColor: item.color }} className="w-3 h-3 rounded-full mr-2" />
-                  <Text className="text-gray-800 font-medium">{item.name}: {item.percentage}%</Text>
+                  <Text className="text-gray-800 font-medium">
+                    {item.name}: {item.percentage}%
+                  </Text>
                 </View>
                 <Text className="text-gray-600 text-sm">{item.technicians} technician</Text>
               </View>
             ))}
           </View>
         </View>
-      </View>
+    </View>
     </ScrollView>
   );
 };

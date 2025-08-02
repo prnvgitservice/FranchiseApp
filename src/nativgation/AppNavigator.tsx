@@ -11,6 +11,7 @@ import EarningsScreen from '../screens/EarningsScreen';
 import AboutUsScreen from '../screens/AboutUsScreen';
 import KeyFeaturesScreen from '../screens/KeyFeatures';
 import TechniciansScreen from '../screens/TechniciansScreen';
+import FranchisePlan from '../screens/FranchisePlan';
 // import DashboardScreen from '../screens/DashboardScreen';
 // import ProfileScreen from '../screens/ProfileScreen';
 // import CategoryScreen from '../screens/CategoryScreen';
@@ -37,6 +38,7 @@ type RootStackParamList = {
   MySubscription: undefined;
   AboutUs: undefined;
   KeyFeatures: undefined;
+  Technicians: undefined;
   AllSubscriptions: undefined;
   Franchise: undefined;
   LeaveReview: undefined;
@@ -101,7 +103,7 @@ const TabNavigator: React.FC = () => {
       <Tab.Screen
         name="More"
         component={MoreOptionsScreen}
-        options={{ title: 'More', unmountOnBlur: true }}
+        options={{ title: 'More' }}
       />
     </Tab.Navigator>
   );
@@ -126,9 +128,9 @@ const AppNavigator: React.FC = () => {
         <Stack.Screen name="AboutUs" component={AboutUsScreen} options={{ title: 'About Us' }} />
         <Stack.Screen name="KeyFeatures" component={KeyFeaturesScreen} options={{ title: 'Key Features' }} />
         <Stack.Screen name="Technicians" component={TechniciansScreen} options={{ title: 'Technicians' }} />
+        <Stack.Screen name="FranchisePlan" component={FranchisePlan} options={{ title: 'Franchise' }} />
         {/* <Stack.Screen name="Services" component={ServicesScreen} options={{ title: 'Services' }} />
         <Stack.Screen name="Reviews" component={ReviewsScreen} options={{ title: 'Reviews' }} />
-        <Stack.Screen name="MySubscription" component={MySubscriptionScreen} options={{ title: 'My Subscription' }} />
         <Stack.Screen name="AllSubscriptions" component={AllSubscriptionsScreen} options={{ title: 'All Subscriptions' }} />
         <Stack.Screen name="SubscriptionDetails" component={ViewPlanCard} options={{ title: 'Subscription Details' }} />
         <Stack.Screen name="LeaveReview" component={CreateReviewScreen} options={{ title: 'Leave a Review' }} />

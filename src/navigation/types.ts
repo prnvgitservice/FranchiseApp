@@ -9,6 +9,8 @@ export type MainAppStackParamList = {
   Dashboard: undefined;
   Lohi: undefined;
   Profile: undefined;
+  FranchisePlan: undefined;
+  MoreOptions: undefined;
 };
 
 export type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
