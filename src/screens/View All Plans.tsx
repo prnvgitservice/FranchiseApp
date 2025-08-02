@@ -8,7 +8,6 @@ import {
   StyleSheet,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { 
   Check, 
   X, 
@@ -154,10 +153,10 @@ const ViewAllPlans: React.FC = () => {
       contentContainerStyle={{ paddingBottom: 30 }}
     >
       {/* Header */}
-      <LinearGradient
+      {/* <LinearGradient
         colors={['#8b5cf6', '#7c3aed']}
         className="pt-12 pb-6 px-4"
-      >
+      > */}
         <View className="flex-row items-center mb-4">
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <ArrowLeft size={24} color="white" />
@@ -169,7 +168,7 @@ const ViewAllPlans: React.FC = () => {
         <Text className="text-purple-200 text-center text-lg">
           Choose the perfect plan for your franchise business
         </Text>
-      </LinearGradient>
+      {/* </LinearGradient> */}
 
       {/* Plans Grid */}
       <View className="px-4 mt-6">

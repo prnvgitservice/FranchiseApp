@@ -31,7 +31,7 @@ const MoreOptionsScreen: React.FC = () => {
     { icon: 'card-outline', title: 'Franchise Plan', screen: 'FranchisePlan' },
     { icon: 'information-circle-outline', title: 'About us', screen: 'AboutUs' },
     { icon: 'bulb-outline', title: 'Key Features', screen: 'KeyFeatures' },
-    { icon: 'pricetags-outline', title: 'All Subscriptions', screen: 'AllSubscriptions' },
+    { icon: 'pricetags-outline', title: 'All Subscriptions', screen: 'ViewAllPlans' },
     {
       icon: 'log-out-outline',
       title: 'Logout',

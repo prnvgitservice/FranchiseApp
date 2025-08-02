@@ -15,6 +15,8 @@ import ReviewScreen from '../screens/ReviewScreen';
 import AddTechnician from '../components/technician/AddTechnician';
 import ViewTechnician from '../components/technician/ViewTechnician';
 import EditTechnician from '../components/technician/EditTechinician';
+import ViewAllPlans from '../screens/View All Plans';
+import FranchisePlan from '../screens/FranchisePlan';
 // import DashboardScreen from '../screens/DashboardScreen';
 // import ProfileScreen from '../screens/ProfileScreen';
 // import CategoryScreen from '../screens/CategoryScreen';
@@ -134,6 +136,10 @@ const AppNavigator: React.FC = () => {
         <Stack.Screen name="AddTechnician" component={AddTechnician} options={{ title: 'Add Techincian' }} />
         <Stack.Screen name="ViewTechnician" component={ViewTechnician} options={{ title: 'View Techincian' }} />
         <Stack.Screen name="EditTechnician" component={EditTechnician} options={{ title: 'Edit Techincian' }} />
+        <Stack.Screen name="ViewAllPlans" component={ViewAllPlans} options={{ title: 'View All Plans' }} />
+        <Stack.Screen name="FranchisePlan" component={FranchisePlan} options={{ title: 'Franchise Plan' }} />
+
+
         {/* <Stack.Screen name="Services" component={ServicesScreen} options={{ title: 'Services' }} />
         <Stack.Screen name="Reviews" component={ReviewsScreen} options={{ title: 'Reviews' }} />
         <Stack.Screen name="MySubscription" component={MySubscriptionScreen} options={{ title: 'My Subscription' }} />
