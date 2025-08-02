@@ -1,7 +1,13 @@
 import React from "react";
 import { View, Text } from "react-native";
 
-export default function DashboardCard({ title, value, icon }) {
+interface DashboardCardProps {
+  title?: string;
+  value?: string | number;
+  icon?: string;
+}
+
+export default function DashboardCard({ title, value, icon }: DashboardCardProps) {
   return (
     <View className="bg-white rounded-lg shadow p-4 flex-1 mx-1 items-center">
       <Text className="text-3xl mb-2">{icon}</Text>
