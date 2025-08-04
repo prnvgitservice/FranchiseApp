@@ -8,15 +8,11 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Check, X, Zap, BadgeIndianRupee } from 'lucide-react-native';
+import { Check, Zap, BadgeIndianRupee } from 'lucide-react-native';
 
 interface PlanFeature {
   name: string;
   included: boolean;
-}
-
-interface FullFeature {
-  text: string;
 }
 
 interface Plan {
@@ -29,10 +25,8 @@ interface Plan {
   validity: number | null;
   validityUnit: string;
   features: PlanFeature[];
-  fullFeatures: FullFeature[];
   discount?: number;
   isPopular?: boolean;
-  leads?: number;
 }
 
 const SubscriptionPage: React.FC = () => {
@@ -41,38 +35,32 @@ const SubscriptionPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Mock API call for Economy Plan
   useEffect(() => {
     const fetchPlan = async () => {
       try {
-        // Simulated API response for Economy Plan
+        // Updated Economy Plan details
         const mockPlan: Plan = {
           _id: "plan_economy",
           name: "Economy Plan",
-          price: 499,
-          originalPrice: 999,
-          gst: 90,
-          finalPrice: 589,
-          validity: 30,
-          validityUnit: "days",
+          price: 3000,
+          originalPrice: 6000,
+          gst: 540,
+          finalPrice: 3540,
+          validity: 50,
+          validityUnit: "leads",
           discount: 50,
           isPopular: true,
           features: [
-            { name: "Up to 5 active jobs", included: true },
-            { name: "Basic customer support", included: true },
-            { name: "Job scheduling", included: true },
-            { name: "Premium analytics", included: false },
-            { name: "Priority customer support", included: false },
+            { name: "Only 5 members per pincode per plan", included: true },
+            { name: "Each Lead Shared with 1 Technician", included: true },
+            { name: "No Commission From Technicians Or Customers", included: true },
+            { name: "Applicable for unlimited Services in a specific category", included: true },
+            { name: "No Refund", included: true },
+            { name: "No Change Of Plan", included: true },
+            { name: "Billing Facility", included: true },
           ],
-          fullFeatures: [
-            { text: "Access to basic job management tools" },
-            { text: "Email and chat support during business hours" },
-            { text: "Ability to schedule up to 5 jobs per day" },
-            { text: "Monthly performance reports" },
-          ]
         };
         
-        // Simulate API delay
         setTimeout(() => {
           setPlan(mockPlan);
           setLoading(false);
@@ -85,12 +73,6 @@ const SubscriptionPage: React.FC = () => {
     
     fetchPlan();
   }, []);
-
-  const handleFullDetails = () => {
-    if (plan) {
-      navigation.navigate('PlanDetails', { plan });
-    }
-  };
 
   if (loading) {
     return (
@@ -161,47 +143,41 @@ const SubscriptionPage: React.FC = () => {
                 <View className="flex-row items-end justify-center">
                   <BadgeIndianRupee size={28} color="#1f2937" />
                   <Text className="text-4xl font-extrabold text-gray-900 ml-1">
-                    {plan.price}
+                    ₹{plan.price}
                   </Text>
                 </View>
                 
-                {plan.originalPrice && plan.discount && (
-                  <View className="flex-row items-center justify-center mt-2">
-                    <Text className="text-gray-400 text-lg line-through mr-2">
-                      ₹{plan.originalPrice}
+                <View className="flex-row items-center justify-center mt-2">
+                  <Text className="text-gray-400 text-lg line-through mr-2">
+                    ₹{plan.originalPrice} + (GST 18%)
+                  </Text>
+                  <View className="bg-red-100 rounded-full px-3 py-1">
+                    <Text className="text-red-800 font-bold">
+                      {plan.discount}% OFF
                     </Text>
-                    <View className="bg-red-100 rounded-full px-3 py-1">
-                      <Text className="text-red-800 font-bold">
-                        {plan.discount}% OFF
-                      </Text>
-                    </View>
                   </View>
-                )}
+                </View>
                 
                 <Text className="text-gray-600 text-center mt-2">
-                  ₹{plan.price} + ₹{plan.gst} GST (18%)
+                  ₹{plan.price} + ₹{plan.gst} (GST 18%)
                 </Text>
                 
                 <View className="bg-blue-100 self-center px-4 py-2 rounded-full mt-3">
                   <Text className="text-blue-700 font-medium">
-                    Valid for {plan.validity} days
+                    Valid until {plan.validity} {plan.validityUnit}
                   </Text>
                 </View>
               </View>
 
               {/* Features */}
               <View className="mb-6">
-                <Text className="text-lg font-semibold text-gray-800 mb-3">
-                  Features:
+                <Text className="text-lg font-semibold text-gray-800 mb-3 text-center">
+                  Plan Features:
                 </Text>
                 <View className="space-y-3">
                   {plan.features.map((feature, idx) => (
                     <View key={idx} className="flex-row items-center">
-                      {feature.included ? (
-                        <Check size={20} color="#10b981" className="mr-3" />
-                      ) : (
-                        <X size={20} color="#ef4444" className="mr-3" />
-                      )}
+                      <Check size={20} color="#10b981" className="mr-3" />
                       <Text className="text-gray-700 text-base">
                         {feature.name}
                       </Text>
@@ -209,42 +185,32 @@ const SubscriptionPage: React.FC = () => {
                   ))}
                 </View>
               </View>
-
-              {/* Full Details Button */}
-              <TouchableOpacity
-                className="border border-blue-500 rounded-lg py-3 mt-4"
-                onPress={handleFullDetails}
-              >
-                <Text className="text-blue-500 font-medium text-center">
-                  View Full Details →
-                </Text>
-              </TouchableOpacity>
             </View>
           </View>
         )}
 
-        {/* Additional Information */}
+        {/* Plan Highlights */}
         <View className="bg-white rounded-xl p-5 mt-6">
-          <Text className="text-lg font-bold text-gray-800 mb-3">
-            Why Choose the Economy Plan?
+          <Text className="text-lg font-bold text-gray-800 mb-3 text-center">
+            Key Benefits
           </Text>
           <View className="space-y-2">
             <View className="flex-row items-start">
               <Text className="text-blue-500 text-lg mr-2">•</Text>
               <Text className="text-gray-600 flex-1">
-                Perfect for new technicians starting their business
+                Exclusive territory with limited technicians per area
               </Text>
             </View>
             <View className="flex-row items-start">
               <Text className="text-blue-500 text-lg mr-2">•</Text>
               <Text className="text-gray-600 flex-1">
-                Affordable pricing with essential features
+                Keep 100% of your earnings with zero commissions
               </Text>
             </View>
             <View className="flex-row items-start">
               <Text className="text-blue-500 text-lg mr-2">•</Text>
               <Text className="text-gray-600 flex-1">
-                Easy upgrade to premium plans as your business grows
+                Professional billing and invoicing support
               </Text>
             </View>
           </View>
@@ -256,41 +222,41 @@ const SubscriptionPage: React.FC = () => {
           onPress={() => navigation.navigate('BuyPlan', { plan })}
         >
           <Text className="text-white text-center text-lg font-bold">
-            Get Started with Economy Plan
+            Subscribe to Economy Plan
           </Text>
         </TouchableOpacity>
       </View>
 
-      {/* FAQ Section */}
+      {/* Terms Section */}
       <View className="px-4 mt-8 mb-10">
         <Text className="text-xl font-bold text-gray-800 mb-4 text-center">
-          Frequently Asked Questions
+          Plan Terms & Conditions
         </Text>
         
         <View className="bg-white rounded-xl p-5 mb-4">
           <Text className="font-semibold text-gray-800 mb-2">
-            Can I upgrade my plan later?
+            Service Area:
           </Text>
           <Text className="text-gray-600">
-            Yes, you can upgrade to any premium plan at any time. The remaining balance from your current plan will be credited towards the new plan.
+            Leads are provided exclusively within your registered pincode area
           </Text>
         </View>
         
         <View className="bg-white rounded-xl p-5 mb-4">
           <Text className="font-semibold text-gray-800 mb-2">
-            What payment methods do you accept?
+            Validity Period:
           </Text>
           <Text className="text-gray-600">
-            We accept all major credit/debit cards, UPI payments, and net banking. All transactions are secure and encrypted.
+            Plan is valid for {plan?.validity} leads or 6 months, whichever comes first
           </Text>
         </View>
         
         <View className="bg-white rounded-xl p-5">
           <Text className="font-semibold text-gray-800 mb-2">
-            Is there a free trial available?
+            Payment Terms:
           </Text>
           <Text className="text-gray-600">
-            Yes! We offer a 7-day free trial for new users. No credit card required to start your trial.
+            Full payment required upfront. GST of 18% included in the final price
           </Text>
         </View>
       </View>
