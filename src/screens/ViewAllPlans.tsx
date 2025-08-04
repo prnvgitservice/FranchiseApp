@@ -157,15 +157,15 @@ const ViewAllPlans: React.FC = () => {
         colors={['#8b5cf6', '#7c3aed']}
         className="pt-12 pb-6 px-4"
       > */}
-        <View className="flex-row items-center mb-4">
+        {/* <View className="flex-row items-center mb-4 bg-yellow-400">
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <ArrowLeft size={24} color="white" />
           </TouchableOpacity>
           <Text className="text-white text-2xl font-bold ml-4">
             View All Plans
           </Text>
-        </View>
-        <Text className="text-purple-200 text-center text-lg">
+        </View> */}
+        <Text className="text-black-200 text-center text-lg mt-2">
           Choose the perfect plan for your franchise business
         </Text>
       {/* </LinearGradient> */}
