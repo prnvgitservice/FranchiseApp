@@ -11,32 +11,57 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons'; // For show/hide password icon
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RootStackParamList } from '../navigation/types';
+import { franchiseLogin } from '../api/apiMethods';
 
-// Define props type using RootStackParamList from navigation types
+// Define props type
 type LoginScreenProps = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
-  const [email, setEmail] = useState<string>('');
+  const [phoneNumber, setPhoneNumber] = useState<string>(''); // Changed from email
   const [password, setPassword] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false); // For password toggle
 
   const handleLogin = async () => {
-    if (!email || !password) {
-      Alert.alert('Error', 'Please fill in all fields');
+    if (!phoneNumber || !password) {
+      Alert.alert('Error', 'Please enter phone number and password');
+      return;
+    }
+
+    // Validate phone number (basic check for digits)
+    const phoneNumberValue = parseInt(phoneNumber, 10);
+    if (isNaN(phoneNumberValue) || phoneNumber.length < 10) {
+      Alert.alert('Error', 'Please enter a valid phone number');
       return;
     }
 
     setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const response = await franchiseLogin({
+        phoneNumber: phoneNumberValue,
+        password,
+      });
+      // Assuming response contains a token
+      if (response?.result?.token) {
+        await AsyncStorage.setItem('jwt_token',response.result.token);
+        await AsyncStorage.setItem('franchiseId',response.result.id);
+        console.log(response.result)
+
+        navigation.navigate('MainApp');
+      } else {
+        Alert.alert('Error', 'Login failed: No token received');
+      }
+    } catch (error: any) {
+      Alert.alert('Error', error.message || 'Failed to sign in');
+    } finally {
       setIsLoading(false);
-      navigation.navigate('MainApp');
-    }, 1500);
+    }
   };
 
   const handleSignUp = () => {
-    // SignUp screen not implemented yet
     Alert.alert('Info', 'Sign Up functionality coming soon');
   };
 
@@ -49,7 +74,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         <View className="flex-1 justify-center items-center px-6">
           {/* Logo Section */}
           <View className="items-center mb-8">
-            <View className="bg-blue-900 p-4 rounded-2xl mb-4">
+            <View className="bg-blue-900 px-2 py-1 rounded-2xl mb-4">
               <Image
                 source={{ uri: 'https://prnvservices.com/uploads/logo/1695377568_logo-white.png' }}
                 className="w-40 h-12"
@@ -66,31 +91,43 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           <View className="w-full max-w-sm bg-white rounded-3xl p-6 shadow-lg border border-gray-100">
             <Text className="text-2xl font-bold text-gray-800 mb-6 text-center">Sign In</Text>
 
-            {/* Email Input */}
+            {/* Phone Number Input */}
             <View className="mb-4">
-              <Text className="text-sm font-medium text-gray-700 mb-2 ml-1">Email</Text>
+              <Text className="text-sm font-medium text-gray-700 mb-2 ml-1">Phone Number</Text>
               <TextInput
-                value={email}
-                onChangeText={setEmail}
-                placeholder="Enter your email"
+                value={phoneNumber}
+                onChangeText={setPhoneNumber}
+                placeholder="Enter your phone number"
                 placeholderTextColor="#9CA3AF"
-                keyboardType="email-address"
+                keyboardType="phone-pad"
                 autoCapitalize="none"
                 className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-800 text-base"
               />
             </View>
 
-            {/* Password Input */}
+            {/* Password Input with Toggle */}
             <View className="mb-6">
               <Text className="text-sm font-medium text-gray-700 mb-2 ml-1">Password</Text>
-              <TextInput
-                value={password}
-                onChangeText={setPassword}
-                placeholder="Enter your password"
-                placeholderTextColor="#9CA3AF"
-                secureTextEntry
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-800 text-base"
-              />
+              <View className="relative">
+                <TextInput
+                  value={password}
+                  onChangeText={setPassword}
+                  placeholder="Enter your password"
+                  placeholderTextColor="#9CA3AF"
+                  secureTextEntry={!showPassword}
+                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-800 text-base"
+                />
+                <TouchableOpacity
+                  onPress={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-3"
+                >
+                  <Icon
+                    name={showPassword ? 'visibility' : 'visibility-off'}
+                    size={18}
+                    color="#6B7280"
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
 
             {/* Login Button */}
@@ -107,8 +144,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
             {/* Sign Up Link */}
             <View className="flex-row justify-center items-center mt-6 pt-4 border-t border-gray-100">
               <Text className="text-sm text-gray-600">Don't have an account? </Text>
+              <Icon name='call' size={15}  color="#5eff00"/>
               <TouchableOpacity onPress={handleSignUp}>
-                <Text className="text-sm text-blue-600 font-semibold">Sign Up</Text>
+                <Text className="text-sm text-blue-600 font-semibold">+91 96035583369</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -118,7 +156,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
             onPress={() => navigation.navigate('MainApp')}
             className="bg-green-600 py-3 px-6 rounded-xl mt-6 items-center"
           >
-            <Text className="text-white font-semibold text-base">Demo: Go to Main Screen</Text>
+            <Text className="text-white font-semibold text-base">Demo: Go to Dashboard</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
@@ -127,6 +165,135 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
 };
 
 export default LoginScreen;
+// import { NativeStackScreenProps } from '@react-navigation/native-stack';
+// import React, { useState } from 'react';
+// import {
+//   Alert,
+//   Image,
+//   KeyboardAvoidingView,
+//   Platform,
+//   SafeAreaView,
+//   Text,
+//   TextInput,
+//   TouchableOpacity,
+//   View,
+// } from 'react-native';
+// import { RootStackParamList } from '../navigation/types';
+
+// // Define props type using RootStackParamList from navigation types
+// type LoginScreenProps = NativeStackScreenProps<RootStackParamList, 'Login'>;
+
+// const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
+//   const [email, setEmail] = useState<string>('');
+//   const [password, setPassword] = useState<string>('');
+//   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+//   const handleLogin = async () => {
+//     if (!email || !password) {
+//       Alert.alert('Error', 'Please fill in all fields');
+//       return;
+//     }
+
+//     setIsLoading(true);
+//     // Simulate API call
+//     setTimeout(() => {
+//       setIsLoading(false);
+//       navigation.navigate('MainApp');
+//     }, 1500);
+//   };
+
+//   const handleSignUp = () => {
+//     // SignUp screen not implemented yet
+//     Alert.alert('Info', 'Sign Up functionality coming soon');
+//   };
+
+//   return (
+//     <SafeAreaView className="flex-1 bg-blue-50">
+//       <KeyboardAvoidingView
+//         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+//         className="flex-1"
+//       >
+//         <View className="flex-1 justify-center items-center px-6">
+//           {/* Logo Section */}
+//           <View className="items-center mb-8">
+//             <View className="bg-blue-900 p-4 rounded-2xl mb-4">
+//               <Image
+//                 source={{ uri: 'https://prnvservices.com/uploads/logo/1695377568_logo-white.png' }}
+//                 className="w-40 h-12"
+//                 resizeMode="contain"
+//               />
+//             </View>
+//             <Text className="text-xl font-semibold text-gray-800">Welcome Back</Text>
+//             <Text className="text-base text-gray-600 text-center">
+//               Sign in to your account to continue
+//             </Text>
+//           </View>
+
+//           {/* Form Container */}
+//           <View className="w-full max-w-sm bg-white rounded-3xl p-6 shadow-lg border border-gray-100">
+//             <Text className="text-2xl font-bold text-gray-800 mb-6 text-center">Sign In</Text>
+
+//             {/* Email Input */}
+//             <View className="mb-4">
+//               <Text className="text-sm font-medium text-gray-700 mb-2 ml-1">Email</Text>
+//               <TextInput
+//                 value={email}
+//                 onChangeText={setEmail}
+//                 placeholder="Enter your email"
+//                 placeholderTextColor="#9CA3AF"
+//                 keyboardType="email-address"
+//                 autoCapitalize="none"
+//                 className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-800 text-base"
+//               />
+//             </View>
+
+//             {/* Password Input */}
+//             <View className="mb-6">
+//               <Text className="text-sm font-medium text-gray-700 mb-2 ml-1">Password</Text>
+//               <TextInput
+//                 value={password}
+//                 onChangeText={setPassword}
+//                 placeholder="Enter your password"
+//                 placeholderTextColor="#9CA3AF"
+//                 secureTextEntry
+//                 className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-800 text-base"
+//               />
+//             </View>
+
+//             {/* Login Button */}
+//             <TouchableOpacity
+//               onPress={handleLogin}
+//               disabled={isLoading}
+//               className={`w-full py-4 rounded-xl mb-4 items-center ${isLoading ? 'bg-gray-400' : 'bg-blue-600'}`}
+//             >
+//               <Text className="text-white text-lg font-semibold text-center">
+//                 {isLoading ? 'Signing In...' : 'Sign In'}
+//               </Text>
+//             </TouchableOpacity>
+
+//             {/* Sign Up Link */}
+//             <View className="flex-row justify-center items-center mt-6 pt-4 border-t border-gray-100">
+//               <Text className="text-sm text-gray-600">Don't have an account? </Text>
+//               <TouchableOpacity onPress={handleSignUp}>
+//                 <Text className="text-sm text-blue-600 font-semibold">Sign Up</Text>
+//               </TouchableOpacity>
+//             </View>
+//           </View>
+
+//           {/* Demo Button */}
+//           <TouchableOpacity
+//             onPress={() => navigation.navigate('MainApp')}
+//             className="bg-green-600 py-3 px-6 rounded-xl mt-6 items-center"
+//           >
+//             <Text className="text-white font-semibold text-base">Demo: Go to Main Screen</Text>
+//           </TouchableOpacity>
+//         </View>
+//       </KeyboardAvoidingView>
+//     </SafeAreaView>
+//   );
+// };
+
+// export default LoginScreen;
 // import React, { useState } from 'react';
 // import {
 //   Alert,

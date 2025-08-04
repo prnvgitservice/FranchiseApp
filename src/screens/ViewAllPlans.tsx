@@ -157,15 +157,15 @@ const ViewAllPlans: React.FC = () => {
         colors={['#8b5cf6', '#7c3aed']}
         className="pt-12 pb-6 px-4"
       > */}
-        <View className="flex-row items-center mb-4">
+        {/* <View className="flex-row items-center mb-4 bg-yellow-400">
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <ArrowLeft size={24} color="white" />
           </TouchableOpacity>
           <Text className="text-white text-2xl font-bold ml-4">
             View All Plans
           </Text>
-        </View>
-        <Text className="text-purple-200 text-center text-lg">
+        </View> */}
+        <Text className="text-black-200 text-center text-lg mt-2">
           Choose the perfect plan for your franchise business
         </Text>
       {/* </LinearGradient> */}
@@ -180,15 +180,10 @@ const ViewAllPlans: React.FC = () => {
             >
               {/* Popular badge */}
               {plan.isPopular && (
-                <View className="absolute -top-3 left-0 right-0 z-10 items-center">
-                  <LinearGradient
-                    colors={['#f59e0b', '#ec4899']}
-                    className="flex-row items-center px-4 py-2 rounded-full"
-                  >
-                    <Crown size={16} color="#fef3c7" className="mr-2" />
-                    <Text className="text-white font-bold">MOST POPULAR</Text>
-                  </LinearGradient>
-                </View>
+                <View className="absolute -top-3 left-1/2 -translate-x-1/2 z-10 items-center bg-yellow-400 rounded-lg p-2 flex-row">
+                  <Crown size={16} color="#fef3c7" className="mr-2" />
+                  <Text className="text-white font-bold">MOST POPULAR</Text>
+              </View>
               )}
 
               {/* Plan card */}
@@ -288,10 +283,10 @@ const ViewAllPlans: React.FC = () => {
       </View>
 
       {/* Footer Banner */}
-      <LinearGradient
+      {/* <LinearGradient
         colors={['#8b5cf6', '#7c3aed']}
         className="mt-8 mx-4 p-5 rounded-xl"
-      >
+      > */}
         <Text className="text-white text-center text-lg font-bold">
           Need help choosing a plan?
         </Text>
@@ -306,7 +301,7 @@ const ViewAllPlans: React.FC = () => {
             Contact Sales
           </Text>
         </TouchableOpacity>
-      </LinearGradient>
+      {/* </LinearGradient> */}
     </ScrollView>
   );
 };

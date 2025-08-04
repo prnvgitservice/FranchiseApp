@@ -15,7 +15,7 @@ import ReviewScreen from '../screens/ReviewScreen';
 import AddTechnician from '../components/technician/AddTechnician';
 import ViewTechnician from '../components/technician/ViewTechnician';
 import EditTechnician from '../components/technician/EditTechinician';
-import ViewAllPlans from '../screens/View All Plans';
+import ViewAllPlans from '../screens/ViewAllPlans';
 import FranchisePlan from '../screens/FranchisePlan';
 // import DashboardScreen from '../screens/DashboardScreen';
 // import ProfileScreen from '../screens/ProfileScreen';
