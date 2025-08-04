@@ -31,9 +31,10 @@ const EarningsScreen: React.FC = () => {
 
   return (
     <ScrollView className="flex-1 bg-gray-100 p-4">
-      <View className="space-y-6 pb-8">
+      <View className="space-y-8 pb-8">
         {/* Summary Cards */}
-        <View className="space-y-4">
+        <View className="space-y-6">
+          {/* Total Earnings Card */}
           <View className="bg-white rounded-2xl p-5 shadow-sm border border-gray-200">
             <View className="flex-row justify-between items-center">
               <View>
@@ -50,7 +51,8 @@ const EarningsScreen: React.FC = () => {
             </View>
           </View>
 
-          <View className="bg-white rounded-2xl p-5 shadow-sm border border-gray-200">
+          {/* This Month Card with extra top margin */}
+          <View className="mt-4 bg-white rounded-2xl p-5 shadow-sm border border-gray-200">
             <View className="flex-row justify-between items-center">
               <View>
                 <Text className="text-sm font-medium text-gray-600">
@@ -66,7 +68,8 @@ const EarningsScreen: React.FC = () => {
             </View>
           </View>
 
-          <View className="bg-white rounded-2xl p-5 shadow-sm border border-gray-200">
+          {/* Total Transactions Card with extra top margin */}
+          <View className="mt-6 bg-white rounded-2xl p-5 shadow-sm border border-gray-200">
             <View className="flex-row justify-between items-center">
               <View>
                 <Text className="text-sm font-medium text-gray-600">
@@ -83,8 +86,8 @@ const EarningsScreen: React.FC = () => {
           </View>
         </View>
 
-        {/* Recent Earnings Table */}
-        <View className="bg-white rounded-2xl p-5 shadow-sm border border-gray-200">
+        {/* Recent Earnings Table with extra top margin */}
+        <View className="mt-8 bg-white rounded-2xl p-5 shadow-sm border border-gray-200">
           <Text className="text-lg font-semibold text-gray-900 mb-4">
             Earnings
           </Text>
@@ -158,6 +161,8 @@ const EarningsScreen: React.FC = () => {
 };
 
 export default EarningsScreen;
+
+
 // import React from 'react';
 // import { View, Text, ScrollView } from 'react-native';
 // import { Feather } from '@expo/vector-icons';

@@ -3,6 +3,8 @@ import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { MainAppNavigationProp } from '../navigation/types';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { LinearGradient } from 'expo-linear-gradient';
+import { BlurView } from 'expo-blur';
 
 const Dashboard = () => {
   const navigation = useNavigation<MainAppNavigationProp>();
@@ -41,18 +43,50 @@ const Dashboard = () => {
 
   const getCurrentDate = () => {
     const today = new Date();
-    return today.toDateString();
+    return today.toLocaleDateString('en-US', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
   };
 
   return (
     <ScrollView className="flex-1 bg-gray-100 px-4 py-6">
-      {/* Header */}
-      <View className="mb-6">
-        <Text className="text-2xl font-bold text-blue-700 mb-1">👋 Welcome back, Franchise</Text>
-        <Text className="text-base text-blue-700 mb-2">Here's your performance overview for today</Text>
-        <Text className="bg-green-500 text-white px-3 py-2 rounded-lg w-max text-sm font-semibold">
-          Today's Date: {getCurrentDate()}
-        </Text>
+      {/* New Header with Gradient */}
+      <View className="mb-6 rounded-2xl overflow-hidden">
+        <LinearGradient
+          colors={['#4F46E5', '#0D9488']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          className="p-6 relative overflow-hidden"
+        >
+          {/* Decorative Circles */}
+          <View className="absolute top-[-64px] right-[-64px] w-32 h-32 bg-indigo-500/20 rounded-full" />
+          <View className="absolute bottom-[-48px] left-[-48px] w-24 h-24 bg-teal-500/20 rounded-full" />
+          
+          <View className="flex-col justify-between">
+            <View className="mb-4">
+              <Text className="text-2xl font-bold text-white mb-2">
+                Welcome back, Franchise
+              </Text>
+              <Text className="text-indigo-100 text-lg">
+                Here's your performance overview for today
+              </Text>
+            </View>
+            
+            <BlurView 
+              intensity={25}
+              tint="light"
+              className="bg-indigo-700/30 rounded-xl border border-teal-400/30 p-4"
+            >
+              <Text className="text-sm text-indigo-100 mb-1">Today's Date</Text>
+              <Text className="text-lg font-semibold text-white">
+                {getCurrentDate()}
+              </Text>
+            </BlurView>
+          </View>
+        </LinearGradient>
       </View>
 
       {/* KPI Cards - 2 per row */}
@@ -84,25 +118,6 @@ const Dashboard = () => {
         ))}
       </View>
 
-      {/* More Button */}
-      <TouchableOpacity
-        onPress={() => navigation.navigate('MoreOptions')}
-        className="bg-gradient-to-r from-purple-600 to-pink-600 p-4 rounded-xl shadow-lg mb-4"
-      >
-        <View className="flex-row items-center justify-between">
-          <View className="flex-row items-center">
-            <View className="bg-white/20 p-2 rounded-lg mr-3">
-              <Icon name="bars" size={20} color="white" />
-            </View>
-            <View>
-              <Text className="text-white font-semibold text-lg">More Options</Text>
-              <Text className="text-white/90 text-sm">Access additional features</Text>
-            </View>
-          </View>
-          <Icon name="chevron-right" size={20} color="white" />
-        </View>
-      </TouchableOpacity>
-
       {/* Monthly Earnings */}
       <View className="bg-white p-4 rounded-xl shadow mb-4">
         <Text className="text-lg font-semibold text-gray-800 mb-4">📈 Monthly Earnings</Text>
@@ -133,7 +148,7 @@ const Dashboard = () => {
               <View className="bg-blue-100 p-2 rounded-full mr-3">
                 <Icon name={item.icon} size={16} color="#3b82f6" />
               </View>
-   <View>
+              <View>
                 <Text className="text-gray-800 font-medium">{item.plan}</Text>
                 <Text className="text-gray-600 text-sm">{item.customer}</Text>
               </View>
@@ -173,7 +188,7 @@ const Dashboard = () => {
             ))}
           </View>
         </View>
-    </View>
+      </View>
     </ScrollView>
   );
 };
