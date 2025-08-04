@@ -388,11 +388,11 @@ const FranchisePlan: React.FC = () => {
       {/* Header */}
       <View className="bg-white px-6 py-4">
         <View className="flex-row items-center justify-between mb-6">
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          {/* <TouchableOpacity onPress={() => navigation.goBack()}>
             <Icon name="arrow-left" size={24} color="#374151" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <Text className="text-gray-900 text-3xl font-bold">
-            {viewMode === "current" ? "My Subscription" : "All Plans"}
+            {viewMode === "current" ? "All plans" : "All Plans"}
           </Text>
           <TouchableOpacity
             onPress={() => setViewMode(viewMode === "current" ? "all" : "current")}
