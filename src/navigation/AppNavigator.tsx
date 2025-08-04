@@ -17,6 +17,7 @@ import ViewTechnician from '../components/technician/ViewTechnician';
 import EditTechnician from '../components/technician/EditTechinician';
 import FranchisePlan from '../screens/FranchisePlan';
 import ViewAllPlans from '../screens/ViewAllPlans';
+import BuySubscriptionScreen from '../screens/BuySubscriptionScreen';
 // import DashboardScreen from '../screens/DashboardScreen';
 // import ProfileScreen from '../screens/ProfileScreen';
 // import CategoryScreen from '../screens/CategoryScreen';
@@ -44,6 +45,9 @@ type RootStackParamList = {
   AboutUs: undefined;
   KeyFeatures: undefined;
   AllSubscriptions: undefined;
+  BuySubscription: undefined;
+  SubscriptionDetails: undefined;
+  Technicians: undefined;
   Franchise: undefined;
   LeaveReview: undefined;
   Login: undefined;
@@ -138,6 +142,7 @@ const AppNavigator: React.FC = () => {
         <Stack.Screen name="EditTechnician" component={EditTechnician} options={{ title: 'Edit Techincian' }} />
         <Stack.Screen name="ViewAllPlans" component={ViewAllPlans} options={{ title: 'View All Plans' }} />
         <Stack.Screen name="FranchisePlan" component={FranchisePlan} options={{ title: 'Franchise Plan' }} />
+        <Stack.Screen name="BuySubscription" component={BuySubscriptionScreen} options={{ title: 'Buy Subscription'}}/>
 
 
         {/* <Stack.Screen name="Services" component={ServicesScreen} options={{ title: 'Services' }} />
