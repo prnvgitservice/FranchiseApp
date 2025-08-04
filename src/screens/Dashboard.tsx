@@ -33,19 +33,10 @@ const Dashboard = () => {
       date: '29/07/2025',
       icon: 'user',
     },
-    {
-      plan: 'Economy Plan',
-      customer: 'soujanya',
-      amount: '₹1,000',
-      date: '29/07/2025',
-      icon: 'user',
-    },
   ];
 
   const subscriptionPlans = [
-    { name: 'Platinum Plan', technicians: 1, percentage: 33.3, color: '#3b82f6' },
-    { name: 'Economy Plan', technicians: 1, percentage: 33.3, color: '#10B981' },
-    { name: 'Glod Plan', technicians: 1, percentage: 33.3, color: '#F59E0B' },
+    { name: 'Platinum Plan', technicians: 1, percentage: 100, color: '#3b82f6' },
   ];
 
   const getCurrentDate = () => {
@@ -93,7 +84,7 @@ const Dashboard = () => {
         ))}
       </View>
 
-      {/* More Button
+      {/* More Button */}
       <TouchableOpacity
         onPress={() => navigation.navigate('MoreOptions')}
         className="bg-gradient-to-r from-purple-600 to-pink-600 p-4 rounded-xl shadow-lg mb-4"
@@ -110,7 +101,7 @@ const Dashboard = () => {
           </View>
           <Icon name="chevron-right" size={20} color="white" />
         </View>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
 
       {/* Monthly Earnings */}
       <View className="bg-white p-4 rounded-xl shadow mb-4">
