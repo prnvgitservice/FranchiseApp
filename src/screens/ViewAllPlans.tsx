@@ -181,13 +181,13 @@ const ViewAllPlans: React.FC = () => {
               {/* Popular badge */}
               {plan.isPopular && (
                 <View className="absolute -top-3 left-0 right-0 z-10 items-center">
-                  <LinearGradient
+                  {/* <LinearGradient
                     colors={['#f59e0b', '#ec4899']}
                     className="flex-row items-center px-4 py-2 rounded-full"
-                  >
+                  > */}
                     <Crown size={16} color="#fef3c7" className="mr-2" />
                     <Text className="text-white font-bold">MOST POPULAR</Text>
-                  </LinearGradient>
+                  {/* </LinearGradient> */}
                 </View>
               )}
 
@@ -288,10 +288,10 @@ const ViewAllPlans: React.FC = () => {
       </View>
 
       {/* Footer Banner */}
-      <LinearGradient
+      {/* <LinearGradient
         colors={['#8b5cf6', '#7c3aed']}
         className="mt-8 mx-4 p-5 rounded-xl"
-      >
+      > */}
         <Text className="text-white text-center text-lg font-bold">
           Need help choosing a plan?
         </Text>
@@ -306,7 +306,7 @@ const ViewAllPlans: React.FC = () => {
             Contact Sales
           </Text>
         </TouchableOpacity>
-      </LinearGradient>
+      {/* </LinearGradient> */}
     </ScrollView>
   );
 };
