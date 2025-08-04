@@ -12,6 +12,8 @@ import AboutUsScreen from '../screens/AboutUsScreen';
 import KeyFeaturesScreen from '../screens/KeyFeatures';
 import TechniciansScreen from '../screens/TechniciansScreen';
 import FranchisePlan from '../screens/FranchisePlan';
+import SubscriptionPage from '../screens/SubscriptionPage';
+import ViewAllPlans from '../screens/ViewAllPlans';
 // import DashboardScreen from '../screens/DashboardScreen';
 // import ProfileScreen from '../screens/ProfileScreen';
 // import CategoryScreen from '../screens/CategoryScreen';
@@ -129,6 +131,9 @@ const AppNavigator: React.FC = () => {
         <Stack.Screen name="KeyFeatures" component={KeyFeaturesScreen} options={{ title: 'Key Features' }} />
         <Stack.Screen name="Technicians" component={TechniciansScreen} options={{ title: 'Technicians' }} />
         <Stack.Screen name="FranchisePlan" component={FranchisePlan} options={{ title: 'Franchise' }} />
+        <Stack.Screen name="SubscriptionPage" component={SubscriptionPage} options={{ title: 'Subscription' }} />
+        <Stack.Screen name="ViewAllPlans" component={ViewAllPlans} options={{ title: 'All Subscriptions' }} />
+        
         {/* <Stack.Screen name="Services" component={ServicesScreen} options={{ title: 'Services' }} />
         <Stack.Screen name="Reviews" component={ReviewsScreen} options={{ title: 'Reviews' }} />
         <Stack.Screen name="AllSubscriptions" component={AllSubscriptionsScreen} options={{ title: 'All Subscriptions' }} />
