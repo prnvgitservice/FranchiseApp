@@ -124,7 +124,7 @@ const ProfileScreen: React.FC = () => {
       formData.append("city", profileData.city);
       formData.append("state", profileData.state);
       formData.append("pincode", profileData.pincode);
-      formData.append("franchiseId", profileData.franchiseId);
+      formData.append("franchiseId", profileData.id);
       if (profileImageFile) {
         formData.append("profileImage", profileImageFile);
       }
@@ -187,7 +187,7 @@ const ProfileScreen: React.FC = () => {
             <View className="mr-4 relative">
               {profileData.profileImage ? (
                 <Image
-                  source={{ uri: profileData.profileImage }}
+                  source={{ url: profileData.profileImage }}
                   className="w-20 h-20 rounded-full"
                 />
               ) : (
