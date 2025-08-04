@@ -180,10 +180,15 @@ const ViewAllPlans: React.FC = () => {
             >
               {/* Popular badge */}
               {plan.isPopular && (
-                <View className="absolute -top-3 left-1/2 -translate-x-1/2 z-10 items-center bg-yellow-400 rounded-lg p-2 flex-row">
-                  <Crown size={16} color="#fef3c7" className="mr-2" />
-                  <Text className="text-white font-bold">MOST POPULAR</Text>
-              </View>
+                <View className="absolute -top-3 left-0 right-0 z-10 items-center">
+                  {/* <LinearGradient
+                    colors={['#f59e0b', '#ec4899']}
+                    className="flex-row items-center px-4 py-2 rounded-full"
+                  > */}
+                    <Crown size={16} color="#fef3c7" className="mr-2" />
+                    <Text className="text-white font-bold">MOST POPULAR</Text>
+                  {/* </LinearGradient> */}
+                </View>
               )}
 
               {/* Plan card */}

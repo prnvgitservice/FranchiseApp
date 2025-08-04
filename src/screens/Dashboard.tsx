@@ -93,7 +93,7 @@ const Dashboard = () => {
         ))}
       </View>
 
-      {/* More Button */}
+      {/* More Button
       <TouchableOpacity
         onPress={() => navigation.navigate('MoreOptions')}
         className="bg-gradient-to-r from-purple-600 to-pink-600 p-4 rounded-xl shadow-lg mb-4"
@@ -110,7 +110,7 @@ const Dashboard = () => {
           </View>
           <Icon name="chevron-right" size={20} color="white" />
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       {/* Monthly Earnings */}
       <View className="bg-white p-4 rounded-xl shadow mb-4">

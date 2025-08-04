@@ -106,31 +106,31 @@ const FranchisePlan: React.FC = () => {
           updatedAt: "2025-01-01",
           __v: 0
         },
-        {
-          _id: "plan2",
-          name: "Gold Plan",
-          originalPrice: 2360,
-          discount: 85,
-          discountPercentage: 85,
-          price: 200,
-          gstPercentage: 18,
-          gst: 36,
-          finalPrice: 236,
-          validity: 30,
-          features: [
-            { name: "Applicable for 5 Technicians", included: true },
-            { name: "Priority support", included: true },
-          ],
-          fullFeatures: [
-            { text: "All features from Premium Plan plus..." },
-            { text: "Dedicated account manager" },
-          ],
-          isPopular: true,
-          isActive: true,
-          createdAt: "2025-01-01",
-          updatedAt: "2025-01-01",
-          __v: 0
-        }
+        // // {
+        // //   _id: "plan2",
+        // //   name: "Gold Plan",
+        // //   originalPrice: 2360,
+        // //   discount: 85,
+        // //   discountPercentage: 85,
+        // //   price: 200,
+        // //   gstPercentage: 18,
+        // //   gst: 36,
+        // //   finalPrice: 236,
+        // //   validity: 30,
+        // //   features: [
+        // //     { name: "Applicable for 5 Technicians", included: true },
+        // //     { name: "Priority support", included: true },
+        // //   ],
+        // //   fullFeatures: [
+        // //     { text: "All features from Premium Plan plus..." },
+        // //     { text: "Dedicated account manager" },
+        // //   ],
+        //   isPopular: true,
+        //   isActive: true,
+        //   createdAt: "2025-01-01",
+        //   updatedAt: "2025-01-01",
+        //   __v: 0
+        // }
       ];
 
       setCurrentSubscription(mockSubscription);
@@ -373,7 +373,7 @@ const FranchisePlan: React.FC = () => {
                 <TouchableOpacity
                   onPress={() => Alert.alert('Details', `Showing details for ${plan.name}`)}
                 >
-                  <Text className="text-center text-purple-600 font-medium">Full Details →</Text>
+                  {/* <Text className="text-center text-purple-600 font-medium">Full Details →</Text> */}
                 </TouchableOpacity>
               </View>
             </View>
@@ -388,11 +388,11 @@ const FranchisePlan: React.FC = () => {
       {/* Header */}
       <View className="bg-white px-6 py-4">
         <View className="flex-row items-center justify-between mb-6">
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          {/* <TouchableOpacity onPress={() => navigation.goBack()}>
             <Icon name="arrow-left" size={24} color="#374151" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <Text className="text-gray-900 text-3xl font-bold">
-            {viewMode === "current" ? "My Subscription" : "All Plans"}
+            {viewMode === "current" ? "All plans" : "All Plans"}
           </Text>
           <TouchableOpacity
             onPress={() => setViewMode(viewMode === "current" ? "all" : "current")}
