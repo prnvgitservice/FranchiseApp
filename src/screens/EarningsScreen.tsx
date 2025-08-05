@@ -1,33 +1,90 @@
-import React from "react";
-import { View, Text, ScrollView } from "react-native";
+import React, { useEffect, useState, useMemo } from "react";
+import { View, Text, ScrollView, ActivityIndicator } from "react-native";
 import { Feather } from "@expo/vector-icons";
+import { getFranchiseAccount } from "../api/apiMethods"; // Adjust path as needed
+
+type AccountEntry = {
+  _id: string;
+  createdAt: string;
+  technicianName: string;
+  category?: string;
+  categoryId?: string;
+  subscriptionName: string;
+  amount: number;
+};
+
+const DEMO_FRANCHISE_ID = "6884601d37c29d81756e5835"; // Replace with your logic if needed
 
 const EarningsScreen: React.FC = () => {
-  // Placeholder data for UI
-  const totalEarnings = 8000;
-  const thisMonthEarnings = 5000;
-  const recentEarnings = [
-    {
-      _id: "1",
-      createdAt: "2025-08-01T10:00:00Z",
-      technicianName: "John Doe",
-      category: "Generator Repair & Services",
-      subscriptionName: "Premium Plan",
-      amount: 5000,
-    },
-    {
-      _id: "2",
-      createdAt: "2025-08-02T09:00:00Z",
-      technicianName: "Jane Smith",
-      category: "Fabricator Services",
-      subscriptionName: "Basic Plan",
-      amount: 3000,
-    },
-  ];
+  const [accountEntries, setAccountEntries] = useState<AccountEntry[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>("");
+
+  // Fetch account data
+  useEffect(() => {
+    const fetchAccount = async () => {
+      setLoading(true);
+      setError("");
+      try {
+        const franchiseId = DEMO_FRANCHISE_ID;
+        if (!franchiseId) {
+          setError("Franchise ID is missing");
+          setLoading(false);
+          return;
+        }
+        const response = await getFranchiseAccount(franchiseId);
+        if (response && response.result && Array.isArray(response.result)) {
+          // Map API data to UI data
+          const mapped = response.result.map((entry: any) => ({
+            _id: entry._id,
+            createdAt: entry.createdAt,
+            technicianName: entry.technicianName,
+            category: entry.category || "-",
+            categoryId: entry.categoryId || "-",
+            subscriptionName: entry.subscriptionName,
+            amount: entry.amount,
+          }));
+          setAccountEntries(mapped);
+        } else {
+          setError("No earnings data found.");
+        }
+      } catch (err) {
+        setError("Failed to fetch earnings data.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAccount();
+  }, []);
+
+  // Calculate total earnings and this month's earnings
+  const { totalEarnings, thisMonthEarnings } = useMemo(() => {
+    let total = 0;
+    let monthTotal = 0;
+    const now = new Date();
+    accountEntries.forEach(entry => {
+      total += entry.amount;
+      const createdAt = new Date(entry.createdAt);
+      if (
+        createdAt.getFullYear() === now.getFullYear() &&
+        createdAt.getMonth() === now.getMonth()
+      ) {
+        monthTotal += entry.amount;
+      }
+    });
+    return { totalEarnings: total, thisMonthEarnings: monthTotal };
+  }, [accountEntries]);
 
   // Format currency
   const formatCurrency = (amount: number) =>
     `₹${amount.toLocaleString("en-IN", { maximumFractionDigits: 0 })}`;
+
+  // Sort recent earnings (latest first)
+  const recentEarnings = useMemo(() => {
+    return [...accountEntries].sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+  }, [accountEntries]);
 
   return (
     <ScrollView className="flex-1 bg-gray-100 p-4">
@@ -51,7 +108,7 @@ const EarningsScreen: React.FC = () => {
             </View>
           </View>
 
-          {/* This Month Card with extra top margin */}
+          {/* This Month Card */}
           <View className="mt-4 bg-white rounded-2xl p-5 shadow-sm border border-gray-200">
             <View className="flex-row justify-between items-center">
               <View>
@@ -68,7 +125,7 @@ const EarningsScreen: React.FC = () => {
             </View>
           </View>
 
-          {/* Total Transactions Card with extra top margin */}
+          {/* Total Transactions Card */}
           <View className="mt-6 bg-white rounded-2xl p-5 shadow-sm border border-gray-200">
             <View className="flex-row justify-between items-center">
               <View>
@@ -86,12 +143,20 @@ const EarningsScreen: React.FC = () => {
           </View>
         </View>
 
-        {/* Recent Earnings Table with extra top margin */}
+        {/* Recent Earnings Table */}
         <View className="mt-8 bg-white rounded-2xl p-5 shadow-sm border border-gray-200">
           <Text className="text-lg font-semibold text-gray-900 mb-4">
             Earnings
           </Text>
-          {recentEarnings.length === 0 ? (
+          {loading ? (
+            <View className="py-8 items-center">
+              <Text className="text-gray-500">Loading earnings...</Text>
+            </View>
+          ) : error ? (
+            <View className="py-8 items-center">
+              <Text className="text-red-500">{error}</Text>
+            </View>
+          ) : recentEarnings.length === 0 ? (
             <View className="py-8 items-center">
               <Text className="text-gray-500">No earnings found.</Text>
             </View>
@@ -99,13 +164,19 @@ const EarningsScreen: React.FC = () => {
             <View className="w-full">
               {/* Table Header */}
               <View className="flex-row bg-gray-100 px-4 py-2 rounded-t-lg border-b border-gray-300">
-                <Text className="w-[40%] text-xs font-medium text-gray-700">
+                <Text className="w-[20%] text-xs font-medium text-gray-700">
+                  Date
+                </Text>
+                <Text className="w-[20%] text-xs font-medium text-gray-700">
                   Technician
                 </Text>
-                <Text className="w-[30%] text-xs font-medium text-gray-700">
+                <Text className="w-[20%] text-xs font-medium text-gray-700">
+                  Category
+                </Text>
+                <Text className="w-[20%] text-xs font-medium text-gray-700">
                   Plan
                 </Text>
-                <Text className="w-[30%] text-xs font-medium text-gray-700 text-right">
+                <Text className="w-[20%] text-xs font-medium text-gray-700 text-right">
                   Commission
                 </Text>
               </View>
@@ -120,36 +191,32 @@ const EarningsScreen: React.FC = () => {
                       : "rounded-b-lg"
                   }`}
                 >
-                  {/* Technician Details */}
-                  <View className="w-[40%]">
-                    <Text className="text-xs font-semibold text-gray-900">
-                      {earning.technicianName || "-"}
-                    </Text>
-                    <Text className="text-xs text-gray-600">
-                      {earning.category || "-"}
-                    </Text>
-                    <Text className="text-[10px] text-gray-400">
-                      {new Date(earning.createdAt).toLocaleDateString("en-IN", {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                      })}
-                    </Text>
-                  </View>
-
+                  {/* Date */}
+                  <Text className="w-[20%] text-xs text-gray-900">
+                    {new Date(earning.createdAt).toLocaleDateString("en-IN", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </Text>
+                  {/* Technician */}
+                  <Text className="w-[20%] text-xs text-gray-900">
+                    {earning.technicianName || "-"}
+                  </Text>
+                  {/* Category */}
+                  <Text className="w-[20%] text-xs text-gray-900">
+                    {earning.category || "-"}
+                  </Text>
                   {/* Plan */}
-                  <View className="w-[30%] justify-center">
-                    <Text className="text-xs text-gray-900">
-                      {earning.subscriptionName || "-"}
-                    </Text>
-                  </View>
-
+                  <Text className="w-[20%] text-xs text-gray-900">
+                    {earning.subscriptionName || "-"}
+                  </Text>
                   {/* Commission */}
-                  <View className="w-[30%] justify-center items-end">
-                    <Text className="text-xs font-semibold text-green-600">
-                      {formatCurrency(earning.amount)}
-                    </Text>
-                  </View>
+                  <Text className="w-[20%] text-xs font-semibold text-green-600 text-right">
+                    {formatCurrency(earning.amount)}
+                  </Text>
                 </View>
               ))}
             </View>
@@ -161,139 +228,3 @@ const EarningsScreen: React.FC = () => {
 };
 
 export default EarningsScreen;
-
-
-// import React from 'react';
-// import { View, Text, ScrollView } from 'react-native';
-// import { Feather } from '@expo/vector-icons';
-
-// const EarningsScreen: React.FC = () => {
-//   // Placeholder data for UI
-//   const totalEarnings = 8000;
-//   const thisMonthEarnings = 5000;
-//   const recentEarnings = [
-//     {
-//       _id: '1',
-//       createdAt: '2025-08-01T10:00:00Z',
-//       technicianName: 'John Doe',
-//       categoryId: 'cat1',
-//       subscriptionName: 'Premium Plan',
-//       amount: 5000,
-//     },
-//     {
-//       _id: '2',
-//       createdAt: '2025-08-02T09:00:00Z',
-//       technicianName: 'Jane Smith',
-//       categoryId: 'cat2',
-//       subscriptionName: 'Basic Plan',
-//       amount: 3000,
-//     },
-//   ];
-
-//   // Format currency
-//   const formatCurrency = (amount: number) =>
-//     `₹${amount.toLocaleString('en-IN', { maximumFractionDigits: 0 })}`;
-
-//   return (
-//     <ScrollView className="flex-1 bg-gray-100 p-4">
-//       <View className="space-y-6 pb-8">
-//         {/* Summary Cards */}
-//         <View className="space-y-4">
-//           <View className="bg-white rounded-2xl p-5 shadow-sm border border-gray-200">
-//             <View className="flex-row justify-between items-center">
-//               <View>
-//                 <Text className="text-sm font-medium text-gray-600">Total Earnings</Text>
-//                 <Text className="text-xl font-bold text-gray-900">
-//                   {formatCurrency(totalEarnings)}
-//                 </Text>
-//               </View>
-//               <View className="p-3 bg-green-100 rounded-xl">
-//                 <Feather name="dollar-sign" size={24} color="#15803d" />
-//               </View>
-//             </View>
-//           </View>
-
-//           <View className="bg-white rounded-2xl p-5 shadow-sm border border-gray-200">
-//             <View className="flex-row justify-between items-center">
-//               <View>
-//                 <Text className="text-sm font-medium text-gray-600">This Month</Text>
-//                 <Text className="text-xl font-bold text-gray-900">
-//                   {formatCurrency(thisMonthEarnings)}
-//                 </Text>
-//               </View>
-//               <View className="p-3 bg-blue-100 rounded-xl">
-//                 <Feather name="calendar" size={24} color="#2563eb" />
-//               </View>
-//             </View>
-//           </View>
-
-//           <View className="bg-white rounded-2xl p-5 shadow-sm border border-gray-200">
-//             <View className="flex-row justify-between items-center">
-//               <View>
-//                 <Text className="text-sm font-medium text-gray-600">Total Transactions</Text>
-//                 <Text className="text-xl font-bold text-gray-900">{recentEarnings.length}</Text>
-//               </View>
-//               <View className="p-3 bg-yellow-100 rounded-xl">
-//                 <Feather name="repeat" size={24} color="#ca8a04" />
-//               </View>
-//             </View>
-//           </View>
-//         </View>
-
-//         {/* Recent Earnings */}
-//         <View className="bg-white rounded-2xl p-5 shadow-sm border border-gray-200">
-//           <Text className="text-lg font-semibold text-gray-900 mb-4">Earnings</Text>
-//           {recentEarnings.length === 0 ? (
-//             <View className="py-8 items-center">
-//               <Text className="text-gray-500">No earnings found.</Text>
-//             </View>
-//           ) : (
-//             <View className="space-y-4">
-//               {recentEarnings.map((earning, index) => (
-//                 <View
-//                   key={earning._id}
-//                   className={`pb-4 ${
-//                     index < recentEarnings.length - 1 ? 'border-b border-gray-200' : ''
-//                   }`}
-//                 >
-//                   <View className="flex-row justify-between">
-//                     <Text className="text-sm font-medium text-gray-600">Date</Text>
-//                     <Text className="text-sm text-gray-900">
-//                       {new Date(earning.createdAt).toLocaleDateString('en-IN', {
-//                         year: 'numeric',
-//                         month: 'short',
-//                         day: 'numeric',
-//                         hour: '2-digit',
-//                         minute: '2-digit',
-//                       })}
-//                     </Text>
-//                   </View>
-//                   <View className="flex-row justify-between mt-2">
-//                     <Text className="text-sm font-medium text-gray-600">Technician</Text>
-//                     <Text className="text-sm text-gray-900">{earning.technicianName || '-'}</Text>
-//                   </View>
-//                   <View className="flex-row justify-between mt-2">
-//                     <Text className="text-sm font-medium text-gray-600">Category</Text>
-//                     <Text className="text-sm text-gray-900">{earning.categoryId || '-'}</Text>
-//                   </View>
-//                   <View className="flex-row justify-between mt-2">
-//                     <Text className="text-sm font-medium text-gray-600">Plan</Text>
-//                     <Text className="text-sm text-gray-900">{earning.subscriptionName || '-'}</Text>
-//                   </View>
-//                   <View className="flex-row justify-between mt-2">
-//                     <Text className="text-sm font-medium text-gray-600">Commission</Text>
-//                     <Text className="text-sm font-semibold text-green-600">
-//                       {formatCurrency(earning.amount)}
-//                     </Text>
-//                   </View>
-//                 </View>
-//               ))}
-//             </View>
-//           )}
-//         </View>
-//       </View>
-//     </ScrollView>
-//   );
-// };
-
-// export default EarningsScreen;

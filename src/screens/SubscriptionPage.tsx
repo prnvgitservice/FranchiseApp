@@ -1,264 +1,133 @@
-import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
+import React from 'react';
+import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../navigation/types';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Check, Zap, BadgeIndianRupee } from 'lucide-react-native';  
+import { Check, Zap, BadgeIndianRupee } from 'lucide-react-native';
 
-interface PlanFeature {
-  name: string;
-  included: boolean;
-}
-
-interface Plan {
-  _id: string;
-  name: string;
-  price: number;
-  originalPrice?: number;
-  gst: number;
-  finalPrice: number;
-  validity: number | null;
-  validityUnit: string;
-  features: PlanFeature[];
-  discount?: number;
-  isPopular?: boolean;
-}
+const economyPlan = {
+  _id: "plan_economy",
+  name: "Economy Plan",
+  price: 3000,
+  originalPrice: 6000,
+  gst: 540,
+  finalPrice: 3540,
+  validity: 50,
+  validityUnit: "leads",
+  discount: 50,
+  isPopular: true,
+  features: [
+    { name: "Only 5 members per pincode per plan", included: true },
+    { name: "Each Lead Shared with 1 Technician", included: true },
+    { name: "No Commission From Technicians Or Customers", included: true },
+    { name: "Applicable for unlimited Services in a specific category", included: true },
+    { name: "No Refund", included: true },
+    { name: "No Change Of Plan", included: true },
+    { name: "Billing Facility", included: true },
+  ],
+};
 
 const SubscriptionPage: React.FC = () => {
-  const navigation = useNavigation();
-  const [plan, setPlan] = useState<Plan | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchPlan = async () => {
-      try {
-        // Updated Economy Plan details
-        const mockPlan: Plan = {
-          _id: "plan_economy",
-          name: "Economy Plan",
-          price: 3000,
-          originalPrice: 6000,
-          gst: 540,
-          finalPrice: 3540,
-          validity: 50,
-          validityUnit: "leads",
-          discount: 50,
-          isPopular: true,
-          features: [
-            { name: "Only 5 members per pincode per plan", included: true },
-            { name: "Each Lead Shared with 1 Technician", included: true },
-            { name: "No Commission From Technicians Or Customers", included: true },
-            { name: "Applicable for unlimited Services in a specific category", included: true },
-            { name: "No Refund", included: true },
-            { name: "No Change Of Plan", included: true },
-            { name: "Billing Facility", included: true },
-          ],
-        };
-        
-        setTimeout(() => {
-          setPlan(mockPlan);
-          setLoading(false);
-        }, 1000);
-      } catch (err: any) {
-        setError(err?.message || 'Failed to fetch plan details');
-        setLoading(false);
-      }
-    };
-    
-    fetchPlan();
-  }, []);
-
-  if (loading) {
-    return (
-      <View className="flex-1 justify-center items-center bg-gray-50">
-        <ActivityIndicator size="large" color="#3b82f6" />
-      </View>
-    );
-  }
-
-  if (error) {
-    return (
-      <View className="flex-1 justify-center items-center p-4">
-        <Text className="text-red-500 text-lg mb-4">{error}</Text>
-        <TouchableOpacity
-          className="bg-blue-500 px-6 py-3 rounded-lg"
-          onPress={() => navigation.goBack()}
-        >
-          <Text className="text-white">Go Back</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   return (
-    <ScrollView className="flex-1 bg-gray-50">
+    <ScrollView style={{ flex: 1, backgroundColor: '#F9FAFB' }}>
       {/* Header */}
       <LinearGradient
         colors={['#3b82f6', '#2563eb']}
-        className="pt-16 pb-8 px-6"
+        style={{ paddingTop: 64, paddingBottom: 32, paddingHorizontal: 24 }}
       >
-        <Text className="text-white text-3xl font-bold text-center mb-2">
+        <Text style={{ color: 'white', fontSize: 28, fontWeight: 'bold', textAlign: 'center', marginBottom: 8 }}>
           Technician Subscription Plans
         </Text>
-        <Text className="text-blue-100 text-center text-lg">
+        <Text style={{ color: '#dbeafe', textAlign: 'center', fontSize: 18 }}>
           Choose the right plan to grow your technical service business
         </Text>
       </LinearGradient>
 
       {/* Economy Plan Card */}
-      <View className="px-4 mt-8">
-        {plan && (
-          <View className="bg-white rounded-2xl shadow-xl overflow-hidden">
-            {/* Popular badge */}
-            {plan.isPopular && ( 
-              <LinearGradient
-                colors={['#f59e0b', '#eab308']}
-                className="py-3 items-center"
-              >
-                <Text className="text-white font-bold text-lg">
-                  MOST POPULAR
-                </Text>
-              </LinearGradient>
-            )}
+      <View style={{ paddingHorizontal: 16, marginTop: 32 }}>
+        <View style={{ backgroundColor: 'white', borderRadius: 24, shadowColor: '#000', shadowOpacity: 0.1, shadowRadius: 8, elevation: 4, overflow: 'hidden' }}>
+          {/* Popular badge */}
+          {economyPlan.isPopular && (
+            <LinearGradient
+              colors={['#f59e0b', '#eab308']}
+              style={{ paddingVertical: 12, alignItems: 'center' }}
+            >
+              <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18 }}>
+                MOST POPULAR
+              </Text>
+            </LinearGradient>
+          )}
 
-            <View className="p-6">
-              {/* Plan header */}
-              <View className="flex-row items-center justify-between mb-6">
-                <View className="bg-blue-100 p-3 rounded-full">
-                  <Zap size={28} color="#3b82f6" />
-                </View>
-                <Text className="text-2xl font-bold text-gray-900">
-                  {plan.name}
+          <View style={{ padding: 24 }}>
+            {/* Plan header */}
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
+              <View style={{ backgroundColor: '#dbeafe', padding: 12, borderRadius: 999 }}>
+                <Zap size={28} color="#3b82f6" />
+              </View>
+              <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#111827' }}>
+                {economyPlan.name}
+              </Text>
+            </View>
+
+            {/* Pricing */}
+            <View style={{ marginBottom: 24 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'center' }}>
+                <BadgeIndianRupee size={28} color="#1f2937" />
+                <Text style={{ fontSize: 32, fontWeight: 'bold', color: '#111827', marginLeft: 4 }}>
+                  ₹{economyPlan.price}
                 </Text>
               </View>
-
-              {/* Pricing */}
-              <View className="mb-6">
-                <View className="flex-row items-end justify-center">
-                  <BadgeIndianRupee size={28} color="#1f2937" />
-                  <Text className="text-4xl font-extrabold text-gray-900 ml-1">
-                    ₹{plan.price}
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 8 }}>
+                <Text style={{ color: '#9ca3af', fontSize: 18, textDecorationLine: 'line-through', marginRight: 8 }}>
+                  ₹{economyPlan.originalPrice} + (GST 18%)
+                </Text>
+                <View style={{ backgroundColor: '#fee2e2', borderRadius: 999, paddingHorizontal: 12, paddingVertical: 4 }}>
+                  <Text style={{ color: '#b91c1c', fontWeight: 'bold' }}>
+                    {economyPlan.discount}% OFF
                   </Text>
                 </View>
-                
-                <View className="flex-row items-center justify-center mt-2">
-                  <Text className="text-gray-400 text-lg line-through mr-2">
-                    ₹{plan.originalPrice} + (GST 18%)
-                  </Text>
-                  <View className="bg-red-100 rounded-full px-3 py-1">
-                    <Text className="text-red-800 font-bold">
-                      {plan.discount}% OFF
+              </View>
+              <Text style={{ color: '#6b7280', textAlign: 'center', marginTop: 8 }}>
+                ₹{economyPlan.price} + ₹{economyPlan.gst} (GST 18%)
+              </Text>
+              <View style={{ backgroundColor: '#dbeafe', alignSelf: 'center', paddingHorizontal: 16, paddingVertical: 8, borderRadius: 999, marginTop: 12 }}>
+                <Text style={{ color: '#2563eb', fontWeight: '500' }}>
+                  Valid until {economyPlan.validity} {economyPlan.validityUnit}
+                </Text>
+              </View>
+            </View>
+
+            {/* Features */}
+            <View style={{ marginBottom: 24 }}>
+              <Text style={{ fontSize: 18, fontWeight: '600', color: '#1f2937', marginBottom: 12, textAlign: 'center' }}>
+                Plan Features:
+              </Text>
+              <View>
+                {economyPlan.features.map((feature, idx) => (
+                  <View key={idx} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+                    <Check size={20} color="#10b981" style={{ marginRight: 12 }} />
+                    <Text style={{ color: '#374151', fontSize: 16 }}>
+                      {feature.name}
                     </Text>
                   </View>
-                </View>
-                
-                <Text className="text-gray-600 text-center mt-2">
-                  ₹{plan.price} + ₹{plan.gst} (GST 18%)
-                </Text>
-                
-                <View className="bg-blue-100 self-center px-4 py-2 rounded-full mt-3">
-                  <Text className="text-blue-700 font-medium">
-                    Valid until {plan.validity} {plan.validityUnit}
-                  </Text>
-                </View>
+                ))}
               </View>
-
-              {/* Features */}
-              <View className="mb-6">
-                <Text className="text-lg font-semibold text-gray-800 mb-3 text-center">
-                  Plan Features:
-                </Text>
-                <View className="space-y-3">
-                  {plan.features.map((feature, idx) => (
-                    <View key={idx} className="flex-row items-center">
-                      <Check size={20} color="#10b981" className="mr-3" />
-                      <Text className="text-gray-700 text-base">
-                        {feature.name}
-                      </Text>
-                    </View>
-                  ))}
-                </View>
-              </View>
-            </View>
-          </View>
-        )}
-
-        {/* Plan Highlights */}
-        <View className="bg-white rounded-xl p-5 mt-6">
-          <Text className="text-lg font-bold text-gray-800 mb-3 text-center">
-            Key Benefits
-          </Text>
-          <View className="space-y-2">
-            <View className="flex-row items-start">
-              <Text className="text-blue-500 text-lg mr-2">•</Text>
-              <Text className="text-gray-600 flex-1">
-                Exclusive territory with limited technicians per area
-              </Text>
-            </View>
-            <View className="flex-row items-start">
-              <Text className="text-blue-500 text-lg mr-2">•</Text>
-              <Text className="text-gray-600 flex-1">
-                Keep 100% of your earnings with zero commissions
-              </Text>
-            </View>
-            <View className="flex-row items-start">
-              <Text className="text-blue-500 text-lg mr-2">•</Text>
-              <Text className="text-gray-600 flex-1">
-                Professional billing and invoicing support
-              </Text>
             </View>
           </View>
         </View>
 
         {/* CTA Button */}
         <TouchableOpacity
-          className="bg-blue-500 py-4 rounded-xl mt-8"
-          onPress={() => navigation.navigate('BuyPlan', { plan })}
+          style={{ backgroundColor: '#3b82f6', paddingVertical: 16, borderRadius: 16, marginTop: 32 }}
+          onPress={() => navigation.navigate('BuySubscription', { plan: economyPlan })}
         >
-          <Text className="text-white text-center text-lg font-bold">
+          <Text style={{ color: 'white', textAlign: 'center', fontSize: 18, fontWeight: 'bold' }}>
             Subscribe to Economy Plan
           </Text>
         </TouchableOpacity>
-      </View>
-
-      {/* Terms Section */}
-      <View className="px-4 mt-8 mb-10">
-        <Text className="text-xl font-bold text-gray-800 mb-4 text-center">
-          Plan Terms & Conditions
-        </Text>
-        
-        <View className="bg-white rounded-xl p-5 mb-4">
-          <Text className="font-semibold text-gray-800 mb-2">
-            Service Area:
-          </Text>
-          <Text className="text-gray-600">
-            Leads are provided exclusively within your registered pincode area
-          </Text>
-        </View>
-        
-        <View className="bg-white rounded-xl p-5 mb-4">
-          <Text className="font-semibold text-gray-800 mb-2">
-            Validity Period:
-          </Text>
-          <Text className="text-gray-600">
-            Plan is valid for {plan?.validity} leads or 6 months, whichever comes first
-          </Text>
-        </View>
-        
-        <View className="bg-white rounded-xl p-5">
-          <Text className="font-semibold text-gray-800 mb-2">
-            Payment Terms:
-          </Text>
-          <Text className="text-gray-600">
-            Full payment required upfront. GST of 18% included in the final price
-          </Text>
-        </View>
       </View>
     </ScrollView>
   );

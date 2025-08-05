@@ -142,7 +142,7 @@ const AppNavigator: React.FC = () => {
         <Stack.Screen name="EditTechnician" component={EditTechnician} options={{ title: 'Edit Techincian' }} />
         <Stack.Screen name="ViewAllPlans" component={ViewAllPlans} options={{ title: 'View All Plans' }} />
         <Stack.Screen name="FranchisePlan" component={FranchisePlan} options={{ title: 'Franchise Plan' }} />
-        <Stack.Screen name="BuySubscription" component={BuySubscriptionScreen} options={{ title: 'Buy Subscription'}}/>
+        <Stack.Screen name="BuySubscriptionScreen" component={BuySubscriptionScreen} options={{ title: 'Buy Subscription'}}/>
 
 
         {/* <Stack.Screen name="Services" component={ServicesScreen} options={{ title: 'Services' }} />
