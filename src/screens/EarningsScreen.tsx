@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { View, Text, ScrollView, ActivityIndicator } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import { getFranchiseAccount } from "../api/apiMethods"; // Adjust path as needed
+import { getFranchiseAccount } from "../api/apiMethods";
 
 type AccountEntry = {
   _id: string;
@@ -13,7 +13,7 @@ type AccountEntry = {
   amount: number;
 };
 
-const DEMO_FRANCHISE_ID = "6884601d37c29d81756e5835"; // Replace with your logic if needed
+const DEMO_FRANCHISE_ID = "6884601d37c29d81756e5835";
 
 const EarningsScreen: React.FC = () => {
   const [accountEntries, setAccountEntries] = useState<AccountEntry[]>([]);
@@ -34,7 +34,6 @@ const EarningsScreen: React.FC = () => {
         }
         const response = await getFranchiseAccount(franchiseId);
         if (response && response.result && Array.isArray(response.result)) {
-          // Map API data to UI data
           const mapped = response.result.map((entry: any) => ({
             _id: entry._id,
             createdAt: entry.createdAt,
@@ -148,35 +147,33 @@ const EarningsScreen: React.FC = () => {
           <Text className="text-lg font-semibold text-gray-900 mb-4">
             Earnings
           </Text>
+          
           {loading ? (
             <View className="py-8 items-center">
-              <Text className="text-gray-500">Loading earnings...</Text>
+              <ActivityIndicator size="large" color="#3b82f6" />
+              <Text className="text-gray-500 mt-2">Loading earnings...</Text>
             </View>
           ) : error ? (
             <View className="py-8 items-center">
-              <Text className="text-red-500">{error}</Text>
+              <Feather name="alert-circle" size={24} color="#ef4444" />
+              <Text className="text-red-500 mt-2">{error}</Text>
             </View>
           ) : recentEarnings.length === 0 ? (
             <View className="py-8 items-center">
-              <Text className="text-gray-500">No earnings found.</Text>
+              <Feather name="database" size={24} color="#9ca3af" />
+              <Text className="text-gray-500 mt-2">No earnings found</Text>
             </View>
           ) : (
             <View className="w-full">
               {/* Table Header */}
               <View className="flex-row bg-gray-100 px-4 py-2 rounded-t-lg border-b border-gray-300">
-                <Text className="w-[20%] text-xs font-medium text-gray-700">
-                  Date
-                </Text>
-                <Text className="w-[20%] text-xs font-medium text-gray-700">
+                <Text className="w-[40%] text-xs font-medium text-gray-700">
                   Technician
                 </Text>
-                <Text className="w-[20%] text-xs font-medium text-gray-700">
-                  Category
-                </Text>
-                <Text className="w-[20%] text-xs font-medium text-gray-700">
+                <Text className="w-[30%] text-xs font-medium text-gray-700">
                   Plan
                 </Text>
-                <Text className="w-[20%] text-xs font-medium text-gray-700 text-right">
+                <Text className="w-[30%] text-xs font-medium text-gray-700 text-right">
                   Commission
                 </Text>
               </View>
@@ -185,38 +182,44 @@ const EarningsScreen: React.FC = () => {
               {recentEarnings.map((earning, index) => (
                 <View
                   key={earning._id}
-                  className={`flex-row px-4 py-3 bg-white ${
+                  className={`flex-row px-4 py-3 ${
+                    index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                  } ${
                     index < recentEarnings.length - 1
                       ? "border-b border-gray-200"
                       : "rounded-b-lg"
                   }`}
                 >
-                  {/* Date */}
-                  <Text className="w-[20%] text-xs text-gray-900">
-                    {new Date(earning.createdAt).toLocaleDateString("en-IN", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </Text>
-                  {/* Technician */}
-                  <Text className="w-[20%] text-xs text-gray-900">
-                    {earning.technicianName || "-"}
-                  </Text>
-                  {/* Category */}
-                  <Text className="w-[20%] text-xs text-gray-900">
-                    {earning.category || "-"}
-                  </Text>
+                  {/* Technician Details */}
+                  <View className="w-[40%]">
+                    <Text className="text-xs font-semibold text-gray-900">
+                      {earning.technicianName || "-"}
+                    </Text>
+                    <Text className="text-xs text-gray-600">
+                      {earning.category || "-"}
+                    </Text>
+                    <Text className="text-[10px] text-gray-400">
+                      {new Date(earning.createdAt).toLocaleDateString("en-IN", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </Text>
+                  </View>
+
                   {/* Plan */}
-                  <Text className="w-[20%] text-xs text-gray-900">
-                    {earning.subscriptionName || "-"}
-                  </Text>
+                  <View className="w-[30%] justify-center">
+                    <Text className="text-xs text-gray-900">
+                      {earning.subscriptionName || "-"}
+                    </Text>
+                  </View>
+
                   {/* Commission */}
-                  <Text className="w-[20%] text-xs font-semibold text-green-600 text-right">
-                    {formatCurrency(earning.amount)}
-                  </Text>
+                  <View className="w-[30%] justify-center items-end">
+                    <Text className="text-xs font-semibold text-green-600">
+                      {formatCurrency(earning.amount)}
+                    </Text>
+                  </View>
                 </View>
               ))}
             </View>

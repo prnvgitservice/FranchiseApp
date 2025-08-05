@@ -1,45 +1,102 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, TextInput, TouchableOpacity, Alert } from 'react-native';
-import { Ionicons, Feather } from '@expo/vector-icons';
-
-interface AuthenticatedUser {
-  id: string;
-  role: 'user' | 'technician';
-  username?: string;
-}
-
-interface ReviewFormData {
-  username: string;
-  rating: number;
-  comment: string;
-}
-
-const mockUser: AuthenticatedUser = {
-  id: '123',
-  role: 'user',
-  username: 'Anonymous',
-};
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { createCompanyReview } from "../api/apiMethods"; // Adjust path as needed
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const FranchiseReviewScreen: React.FC = () => {
-  const [formData, setFormData] = useState<ReviewFormData>({
-    username: mockUser.username || '',
-    rating: 0,
-    comment: '',
-  });
+  const [rating, setRating] = useState<number>(0);
+  const [comment, setComment] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [username, setUsername] = useState<string>("Anonymous");
+  const [userId, setUserId] = useState<string>("");
+  const [role, setRole] = useState<"user" | "technician">("user");
 
-  const handleSubmit = () => {
-    if (!formData.rating) {
-      Alert.alert('Error', 'Please select a rating.');
+  // Fetch user info (simulate localStorage user)
+  useEffect(() => {
+    const fetchUser = async () => {
+      const userString = await AsyncStorage.getItem("user");
+      if (userString) {
+        const user = JSON.parse(userString);
+        setUsername(user.username || "Anonymous");
+        setUserId(user.id || "");
+        // Only allow "user" or "technician"
+        setRole(user.role === "technician" ? "technician" : "user");
+      }
+    };
+    fetchUser();
+  }, []);
+
+  const validateInputs = (): string | null => {
+    if (!rating) return "Please select a rating (1-5 stars).";
+    if (!comment.trim()) return "Please provide a comment.";
+    if (comment.length > 500) return "Comment cannot exceed 500 characters.";
+    return null;
+  };
+
+  const handleReviewSubmit = async () => {
+    setError(null);
+    setLoading(true);
+
+    if (!userId) {
+      setError("You must be logged in to submit a review.");
+      setLoading(false);
       return;
     }
-    if (!formData.comment.trim()) {
-      Alert.alert('Error', 'Please enter a comment.');
+
+    const inputError = validateInputs();
+    if (inputError) {
+      setError(inputError);
+      setLoading(false);
       return;
     }
-    // Placeholder for API submission
-    console.log('Submitting review:', formData);
-    Alert.alert('Success', 'Review submitted successfully!');
-    setFormData({ username: mockUser.username || '', rating: 0, comment: '' });
+
+    const reviewData = {
+      franchiseId: userId,
+      role, // "user" or "technician"
+      rating,
+      comment: comment.trim(),
+    };
+
+    try {
+      const response = await createCompanyReview(reviewData);
+      if (response?.success) {
+        Alert.alert("Thank you for your review!");
+        setRating(0);
+        setComment("");
+      } else {
+        throw new Error(
+          response?.error?.[0] || response?.message || "Failed to submit review."
+        );
+      }
+    } catch (err: any) {
+      let errorMessage = "An error occurred. Please try again.";
+      if (err.response?.status === 401) {
+        errorMessage = "Unauthorized. Please log in again.";
+      } else if (err.response?.status === 400) {
+        errorMessage = err.response?.data?.error?.[0] || "Invalid review data.";
+      } else if (err.response?.status === 429) {
+        errorMessage = "Too many requests. Please try again later.";
+      } else if (err.response?.status >= 500) {
+        errorMessage = "Server error. Please try again later.";
+      } else if (err.message?.includes("Network Error")) {
+        errorMessage = "Network error. Please check your connection.";
+      } else if (err.message) {
+        errorMessage = err.message;
+      }
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -54,15 +111,19 @@ const FranchiseReviewScreen: React.FC = () => {
       </View>
 
       <View className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+        {error && (
+          <Text className="text-red-600 text-sm text-center bg-red-50 p-2 rounded mb-4">
+            {error}
+          </Text>
+        )}
         <View className="flex-col gap-6">
           {/* Name */}
           <View>
             <Text className="text-lg font-medium text-gray-700 mb-2">Name</Text>
             <TextInput
               className="p-3 border border-gray-300 rounded-lg bg-gray-100"
-              value={formData.username}
-              onChangeText={(text) => setFormData({ ...formData, username: text })}
-              editable={true}
+              value={username}
+              editable={false}
               style={{ fontSize: 16 }}
               accessibilityLabel="Name input"
             />
@@ -75,17 +136,17 @@ const FranchiseReviewScreen: React.FC = () => {
               {[1, 2, 3, 4, 5].map((star) => (
                 <TouchableOpacity
                   key={star}
-                  onPress={() => setFormData({ ...formData, rating: star })}
+                  onPress={() => setRating(star)}
                   activeOpacity={0.7}
-                  accessibilityLabel={`Rate ${star} star${star > 1 ? 's' : ''}`}
+                  accessibilityLabel={`Rate ${star} star${star > 1 ? "s" : ""}`}
                 >
                   <Ionicons
-                    name={star <= formData.rating ? 'star' : 'star-outline'}
+                    name={star <= rating ? "star" : "star-outline"}
                     size={40}
-                    color={star <= formData.rating ? '#facc15' : '#d1d5db'}
+                    color={star <= rating ? "#facc15" : "#d1d5db"}
                     style={
-                      star <= formData.rating
-                        ? { backgroundColor: '#fef9c3', borderRadius: 8 }
+                      star <= rating
+                        ? { backgroundColor: "#fef9c3", borderRadius: 8 }
                         : {}
                     }
                   />
@@ -102,22 +163,29 @@ const FranchiseReviewScreen: React.FC = () => {
               multiline
               numberOfLines={4}
               placeholder="Write your review here..."
-              value={formData.comment}
-              onChangeText={(text) => setFormData({ ...formData, comment: text })}
-              style={{ fontSize: 16, textAlignVertical: 'top' }}
+              value={comment}
+              onChangeText={setComment}
+              style={{ fontSize: 16, textAlignVertical: "top" }}
               accessibilityLabel="Comment input"
+              maxLength={500}
             />
           </View>
 
           {/* Submit Button */}
           <View className="flex-row justify-end">
             <TouchableOpacity
-              className="px-6 py-3 bg-blue-600 rounded-xl shadow-sm"
+              className="px-6 py-3 bg-blue-600 rounded-xl shadow-sm flex-row items-center"
               activeOpacity={0.7}
-              onPress={handleSubmit}
+              onPress={handleReviewSubmit}
               accessibilityLabel="Submit review"
+              disabled={loading}
             >
-              <Text className="text-base font-medium text-white">Submit</Text>
+              {loading && (
+                <ActivityIndicator size="small" color="#fff" className="mr-2" />
+              )}
+              <Text className="text-base font-medium text-white">
+                {loading ? "Submitting..." : "Submit"}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -127,79 +195,3 @@ const FranchiseReviewScreen: React.FC = () => {
 };
 
 export default FranchiseReviewScreen;
-// import React from 'react';
-// import { View, Text, ScrollView, TextInput, TouchableOpacity } from 'react-native';
-// import { Feather } from '@expo/vector-icons';
-
-// const ReviewScreen: React.FC = () => {
-//   // Fake data for UI
-//   const fakeUser = {
-//     username: 'John Doe',
-//   };
-
-//   return (
-//     <ScrollView className="flex-1 bg-gray-100 p-6">
-//       <View className="space-y-6 pb-8">
-//         {/* Header with Close Button */}
-//         <View className="flex-row justify-between items-center">
-//           <Text className="text-lg font-medium text-gray-700">💥 Franchise Review</Text>
-//           <TouchableOpacity>
-//             <Feather name="x" size={24} color="#6b7280" />
-//           </TouchableOpacity>
-//         </View>
-
-//         {/* Review Form */}
-//         <View className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-//           <View className="space-y-4">
-//             {/* Name Field */}
-//             <Text className="text-sm font-medium text-gray-700">Name</Text>
-//             <TextInput
-//               value={fakeUser.username}
-//               editable={false}
-//               className="p-3 border border-gray-300 rounded-lg text-gray-900"
-//               style={{ fontSize: 16 }}
-//             />
-
-//             {/* Rating Field */}
-//             <Text className="text-sm font-medium text-gray-700">Rating</Text>
-//             <View className="flex-row justify-center space-x-2 mb-6">
-//               {[1, 2, 3, 4, 5].map((star) => (
-//                 <TouchableOpacity
-//                   key={star}
-//                   accessibilityLabel={`Rate ${star} star${star > 1 ? 's' : ''}`}
-//                 >
-//                   <Feather
-//                     name="star"
-//                     size={48}
-//                     color={star <= 3 ? '#facc15' : '#d1d5db'} // Simulating selected rating of 3
-//                     style={star <= 3 ? { backgroundColor: '#fef9c3', borderRadius: 8 } : {}}
-//                   />
-//                 </TouchableOpacity>
-//               ))}
-//             </View>
-
-//             {/* Comment Field */}
-//             <Text className="text-sm font-medium text-gray-700">Comment</Text>
-//             <TextInput
-//               multiline
-//               numberOfLines={4}
-//               placeholder="Write your review here..."
-//               value=""
-//               className="w-full p-3 border border-gray-300 rounded-lg text-gray-900"
-//               style={{ fontSize: 16, textAlignVertical: 'top' }}
-//             />
-
-//             {/* Submit Button */}
-//             <View className="flex-row justify-end">
-//               <TouchableOpacity className="px-4 py-2 bg-blue-600 rounded-lg">
-//                 <Text className="text-sm text-white font-medium">Submit</Text>
-//               </TouchableOpacity>
-//             </View>
-//           </View>
-//         </View>
-//       </View>
-//     </ScrollView>
-//   );
-// };
-
-// export default ReviewScreen;
