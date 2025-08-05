@@ -66,7 +66,7 @@ const BuySubscriptionScreen: React.FC = () => {
   const proceedToPayment = () => {
     if (!selectedMethod) {
       setError('Please select a payment method');
-      return;
+      return;  
     }
 
     setLoading(true);

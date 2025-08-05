@@ -4,7 +4,7 @@ import {
   Text, 
   ScrollView, 
   TouchableOpacity, 
-  ActivityIndicator, 
+  ActivityIndicator,  
   StyleSheet 
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -32,7 +32,7 @@ type FranchisePlan = {
   discount: number;
   features: PlanFeature[];
   isPopular?: boolean;
-};
+}; 
 
 const ViewAllPlansScreen: React.FC = () => {
   const navigation = useNavigation();

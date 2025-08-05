@@ -147,7 +147,7 @@ const TechniciansScreen: React.FC = () => {
             </Text>
             <Text className="text-base text-gray-500 m-2">
               Manage your network of technicians
-            </Text>
+            </Text> 
           </View>
           <TouchableOpacity
             className="bg-indigo-600 rounded-full py-3 px-4 flex-row items-center justify-center shadow-md"
