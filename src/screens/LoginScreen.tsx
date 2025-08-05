@@ -48,6 +48,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
       if (response?.result?.token) {
         await AsyncStorage.setItem('jwt_token',response.result.token);
         await AsyncStorage.setItem('franchiseId',response.result.id);
+        await AsyncStorage.setItem('franchiseName',response.result.username);
         console.log(response.result)
 
         navigation.navigate('MainApp');

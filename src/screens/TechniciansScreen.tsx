@@ -8,7 +8,7 @@ import {
   Pressable,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import { Feather } from "@expo/vector-icons";
+import { Feather, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "expo-router";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -149,7 +149,7 @@ const TechniciansScreen: React.FC = () => {
               Manage your network of technicians
             </Text> 
           </View>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             className="bg-indigo-600 rounded-full py-3 px-4 flex-row items-center justify-center shadow-md"
             onPress={() => navigation.navigate("AddTechnician")}
           >
@@ -157,7 +157,7 @@ const TechniciansScreen: React.FC = () => {
             <Text className="text-white font-semibold ml-2 text-base">
               Add Technician
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         {/* Error Message */}
@@ -171,12 +171,8 @@ const TechniciansScreen: React.FC = () => {
         <View className="bg-white rounded-2xl p-5 shadow-md border border-gray-100 mt-6">
           <View className="space-y-4">
             <View className="relative">
-              <Feather
-                name="search"
-                size={20}
-                color="#6b7280"
-                className="absolute left-3 top-1/2 -translate-y-1/2"
-              />
+            <Feather name="search" size={18} color="black" className="absolute left-3 top-1/2 -translate-y-1/2 z-10" />
+
               <TextInput
                 placeholder="Search by name or category..."
                 value={searchTerm}
@@ -184,13 +180,13 @@ const TechniciansScreen: React.FC = () => {
                 className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-gray-900 bg-gray-50 mb-2 text-base"
               />
             </View>
-            <View className="flex-row items-center space-x-3">
-              <Feather name="filter" size={20} color="#6b7280" />
-              <View className="flex-1 border border-gray-200 rounded-xl bg-gray-50">
+            <View className="flex-row items-center space-x-3 gap-1">
+            <Feather name="filter" size={20} color="black" />
+              <View className="flex-1 bg-white rounded-lg border border-gray-300 overflow-hidden">
                 <Picker
                   selectedValue={filterPlan}
                   onValueChange={(value) => setFilterPlan(value)}
-                  style={{ height: 48, color: "#111827" }}
+                  style={{ fontSize: 16 , color: "#111827" }}
                 >
                   {subscriptionPlans.map((plan) => (
                     <Picker.Item
