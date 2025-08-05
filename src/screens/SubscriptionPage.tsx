@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Check, Zap, BadgeIndianRupee } from 'lucide-react-native';
+import { Check, Zap, BadgeIndianRupee } from 'lucide-react-native';  
 
 interface PlanFeature {
   name: string;
@@ -116,7 +116,7 @@ const SubscriptionPage: React.FC = () => {
         {plan && (
           <View className="bg-white rounded-2xl shadow-xl overflow-hidden">
             {/* Popular badge */}
-            {plan.isPopular && (
+            {plan.isPopular && ( 
               <LinearGradient
                 colors={['#f59e0b', '#eab308']}
                 className="py-3 items-center"

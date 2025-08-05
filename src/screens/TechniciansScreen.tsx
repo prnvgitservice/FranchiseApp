@@ -49,7 +49,7 @@ const TechniciansScreen: React.FC = () => {
       id: "2",
       username: "Jane Smith",
       phoneNumber: "+91 87654 32109",
-      category: "Electrical",
+      category: "Electrical", 
       areaName: "Indiranagar",
       city: "Bangalore",
       pincode: "560038",
@@ -78,7 +78,7 @@ const TechniciansScreen: React.FC = () => {
     "all",
     "Economy Plan",
     "Gold Plan",
-    "Platinum Plan",
+    "Platinum Plan", 
   ];
 
   // Format date to "DD MMM YYYY"
@@ -102,7 +102,7 @@ const TechniciansScreen: React.FC = () => {
             </Text>
             <Text className="text-base text-gray-500 m-2">
               Manage your network of technicians
-            </Text>
+            </Text> 
           </View>
           <TouchableOpacity
             className="bg-indigo-600 rounded-full py-3 px-4 flex-row items-center justify-center shadow-md"

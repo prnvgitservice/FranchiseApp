@@ -56,7 +56,7 @@ const FranchisePlan: React.FC = () => {
   const [plans, setPlans] = useState<Plan[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<"current" | "all">("current");
+  const [viewMode, setViewMode] = useState<"current" | "all">("current");  
 
   // Mock data for demonstration - matching both views
   useEffect(() => {
@@ -105,7 +105,7 @@ const FranchisePlan: React.FC = () => {
           createdAt: "2025-01-01",
           updatedAt: "2025-01-01",
           __v: 0
-        },
+        }, 
         // // {
         // //   _id: "plan2",
         // //   name: "Gold Plan",
