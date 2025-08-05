@@ -229,21 +229,21 @@ const AboutUsScreen: React.FC = () => {
               <Ionicons name="call" size={24} color="#1e40af" />
               <View>
                 <Text className="text-base font-medium text-gray-700">Phone</Text>
-                <Text className="text-base text-gray-600">+91 98765 43210</Text>
+                <Text className="text-base text-gray-600">+91 9603558369</Text>
               </View>
             </View>
             <View className="flex-row items-center gap-3">
               <Ionicons name="mail" size={24} color="#1e40af" />
               <View>
                 <Text className="text-base font-medium text-gray-700">Email</Text>
-                <Text className="text-base text-gray-600">info@prnvservices.com</Text>
+                <Text className="text-base text-gray-600">prnvservices@gmail.com</Text>
               </View>
             </View>
-            <View className="flex-row items-center gap-3">
-              <Ionicons name="location" size={24} color="#1e40af" />
+            <View className="flex-row items-center gap-3 pr-3">
+              <Ionicons name="location" size={24} color="#1e40af"/>
               <View>
                 <Text className="text-base font-medium text-gray-700">Service Area</Text>
-                <Text className="text-base text-gray-600">GHMC Area, Hyderabad</Text>
+                <Text className="text-base text-gray-600 p-1">PRNV SERVICES, Flat No. 301, Sai Manor Apartment, H.NO. 7-1-621/10, Near Umesh Chandra Statue, IAS Quarters Lane, SR Nagar, Hyderabad, Telangana, 500038</Text>
               </View>
             </View>
           </View>

@@ -142,11 +142,11 @@ const TechniciansScreen: React.FC = () => {
         {/* Header */}
         <View className="space-y-3">
           <View>
-            <Text className="text-3xl font-bold text-gray-900 mb-2">
-              Technicians
+            <Text className="text-2xl font-bold text-gray-900 mb-2">
+            Technicians Management
             </Text>
             <Text className="text-base text-gray-500 m-2">
-              Manage your network of technicians
+             Manage and monitor all technicians in your network
             </Text> 
           </View>
           {/* <TouchableOpacity
@@ -171,7 +171,7 @@ const TechniciansScreen: React.FC = () => {
         <View className="bg-white rounded-2xl p-5 shadow-md border border-gray-100 mt-6">
           <View className="space-y-4">
             <View className="relative">
-            <Feather name="search" size={18} color="black" className="absolute left-3 top-1/2 -translate-y-1/2 z-10" />
+            <Feather name="search" size={18} color="#BDBDBD" className="absolute left-3 top-1/2 -translate-y-1/2 z-10" />
 
               <TextInput
                 placeholder="Search by name or category..."
@@ -181,7 +181,7 @@ const TechniciansScreen: React.FC = () => {
               />
             </View>
             <View className="flex-row items-center space-x-3 gap-1">
-            <Feather name="filter" size={20} color="black" />
+            <Feather name="filter" size={20} color="#BDBDBD" />
               <View className="flex-1 bg-white rounded-lg border border-gray-300 overflow-hidden">
                 <Picker
                   selectedValue={filterPlan}

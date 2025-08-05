@@ -98,7 +98,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
               <TextInput
                 value={phoneNumber}
                 onChangeText={setPhoneNumber}
-                placeholder="Enter your phone number"
+                placeholder="Enter 10-digit phone number"
                 placeholderTextColor="#9CA3AF"
                 keyboardType="phone-pad"
                 autoCapitalize="none"
@@ -113,7 +113,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
                 <TextInput
                   value={password}
                   onChangeText={setPassword}
-                  placeholder="Enter your password"
+                  placeholder="Password (6-10 characters)"
                   placeholderTextColor="#9CA3AF"
                   secureTextEntry={!showPassword}
                   className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-800 text-base"

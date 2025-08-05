@@ -62,10 +62,10 @@ const ViewAllPlansScreen: React.FC = () => {
       <View className="w-full max-w-md mx-auto px-4 pt-8">
         <View className="mb-10 text-center">
           <Text className="text-4xl font-bold text-gray-900">
-            Franchise Plan
+            The Ultimate Franchise Plan
           </Text>
           <Text className="text-base text-gray-600 mt-3 leading-relaxed">
-            Unlock premium features to grow your franchise business with our most popular plan.
+          Unlock every premium feature and grow your franchise business with our all-in-one, most popular plan.
           </Text>
         </View>
 
