@@ -3,6 +3,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 export type RootStackParamList = {
   Login: undefined;
   MainApp: undefined;
+  BuySubscription: { plan: any };
 };
 
 export type MainAppStackParamList = {

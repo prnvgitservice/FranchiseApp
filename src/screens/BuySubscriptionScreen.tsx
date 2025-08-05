@@ -1,224 +1,129 @@
 import React, { useState } from 'react';
-import { 
-  View, 
-  Text, 
-  TouchableOpacity, 
-  ActivityIndicator,
-  ScrollView
-} from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { 
-  Check, 
-  CreditCard, 
-  Smartphone, 
-  DollarSign, 
-  Landmark, 
-  QrCode,
-  ArrowLeft
-} from 'lucide-react-native';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { useRoute, useNavigation } from '@react-navigation/native';
+import { Check, CreditCard, Smartphone, Landmark, DollarSign, QrCode, ArrowLeft } from 'lucide-react-native';
 
-const BuySubscriptionScreen: React.FC = () => {
+const paymentMethods = [
+  {
+    id: 'upi',
+    name: 'UPI Payment',
+    description: 'Pay using any UPI app like Google Pay, PhonePe, Paytm',
+    icon: Smartphone,
+    popular: true,
+  },
+  {
+    id: 'card',
+    name: 'Credit/Debit Card',
+    description: 'Pay using Visa, Mastercard, Rupay or other cards',
+    icon: CreditCard,
+  },
+  {
+    id: 'netbanking',
+    name: 'Net Banking',
+    description: 'Direct bank transfer from 50+ Indian banks',
+    icon: Landmark,
+  },
+  {
+    id: 'wallet',
+    name: 'Paytm Wallet',
+    description: 'Pay using your Paytm wallet balance',
+    icon: DollarSign,
+  },
+  {
+    id: 'qr',
+    name: 'QR Code',
+    description: 'Scan and pay using any UPI app',
+    icon: QrCode,
+  },
+];
+
+const BuySubscriptionScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { plan } = route.params as { plan: any };
-  const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const paymentMethods = [
-    {
-      id: 'upi',
-      name: 'UPI Payment',
-      icon: Smartphone,
-      description: 'Pay using any UPI app',
-      popular: true,
-    },
-    {
-      id: 'cards',
-      name: 'Credit/Debit Card',
-      icon: CreditCard,
-      description: 'Pay using cards',
-    },
-    {
-      id: 'netbanking',
-      name: 'Net Banking',
-      icon: Landmark,
-      description: 'Direct bank transfer',
-    },
-    {
-      id: 'wallet',
-      name: 'Paytm Wallet',
-      icon: DollarSign,
-      description: 'Pay using wallet',
-    },
-    {
-      id: 'qr',
-      name: 'QR Code',
-      icon: QrCode,
-      description: 'Scan and pay',
-    },
-  ];
-
-  const handlePaymentSelection = (methodId: string) => {
-    setSelectedMethod(methodId);
-  };
-
-  const proceedToPayment = () => {
-    if (!selectedMethod) {
-      setError('Please select a payment method');
-      return;  
-    }
-
-    setLoading(true);
-    
-    // Simulate payment processing
-    setTimeout(() => {
-      setLoading(false);
-      navigation.navigate('PaymentSuccess', { plan });
-    }, 2000);
-  };
+  const { plan } = route.params as any;
+  const [selectedMethod, setSelectedMethod] = useState('upi');
 
   return (
     <ScrollView className="flex-1 bg-gray-50">
-      <View className="p-6">
+      <View className="max-w-xl mx-auto w-full px-4 py-6">
+        {/* Header */}
         <View className="flex-row items-center mb-6">
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <ArrowLeft size={24} color="#4b5563" />
           </TouchableOpacity>
           <Text className="text-gray-900 text-2xl font-bold ml-4">
-            Complete Purchase
+            Complete Your Purchase
           </Text>
         </View>
 
-        {error && (
-          <View className="bg-red-100 p-3 rounded-lg mb-6">
-            <Text className="text-red-600 text-center">{error}</Text>
-          </View>
-        )}
-
-        <View className="mb-8 p-6 bg-blue-50 rounded-lg border border-blue-200">
-          <Text className="text-xl font-bold text-gray-900 mb-2">
-            {plan?.name}
+        {/* Plan Card */}
+        <View className="bg-blue-50 rounded-xl p-4 mb-6">
+          <Text className="text-lg font-semibold text-gray-800 mb-1">{plan.name}</Text>
+          <Text className="text-gray-600">Total Amount</Text>
+          <Text className="text-2xl font-bold text-blue-700 mt-1">
+            ₹{plan.finalPrice}{' '}
+            <Text className="text-base font-normal text-gray-500">
+              ({plan.price} + {plan.gst} GST)
+            </Text>
           </Text>
-          <View className="flex-row items-center justify-between">
-            <View>
-              <Text className="text-gray-600">Total Amount</Text>
-              <Text className="text-2xl font-bold text-gray-900">
-                ₹{plan?.finalPrice}
-                <Text className="text-gray-500 text-sm">
-                  {' '}(₹{plan?.price} + ₹{plan?.gst} GST)
-                </Text>
-              </Text>
-            </View>
-            {plan?.discount > 0 && (
-              <View className="bg-green-100 px-3 py-1 rounded-full">
-                <Text className="text-green-800 font-medium">
-                  {plan?.discount}% OFF
-                </Text>
-              </View>
-            )}
-          </View>
         </View>
 
-        <Text className="text-lg font-semibold text-gray-800 mb-4">
-          Select Payment Method
-        </Text>
-        
-        <View className="mb-8">
+        {/* Payment Methods */}
+        <Text className="text-base font-semibold text-gray-800 mb-2">Select Payment Method</Text>
+        <View className="space-y-3 mb-6">
           {paymentMethods.map((method) => {
             const Icon = method.icon;
             return (
               <TouchableOpacity
                 key={method.id}
-                className={`p-4 border rounded-lg mb-3 ${
-                  selectedMethod === method.id 
-                    ? 'border-blue-500 bg-blue-50' 
-                    : 'border-gray-200'
-                }`}
-                onPress={() => handlePaymentSelection(method.id)}
+                className={`flex-row items-center border rounded-lg px-4 py-3 bg-white ${selectedMethod === method.id ? 'border-blue-600' : 'border-gray-200'}`}
+                onPress={() => setSelectedMethod(method.id)}
+                activeOpacity={0.8}
               >
-                <View className="flex-row items-center justify-between">
-                  <View className="flex-row items-center">
-                    <View className={`p-2 rounded-lg mr-4 ${
-                      selectedMethod === method.id 
-                        ? 'bg-blue-100' 
-                        : 'bg-gray-100'
-                    }`}>
-                      <Icon 
-                        size={20} 
-                        color={selectedMethod === method.id ? '#3b82f6' : '#6b7280'} 
-                      />
-                    </View>
-                    <View>
-                      <Text className="font-medium text-gray-800">
-                        {method.name}
-                      </Text>
-                      <Text className="text-gray-500 text-sm">
-                        {method.description}
-                      </Text>
-                    </View>
-                  </View>
-                  
-                  <View className="flex-row items-center">
-                    {method.popular && (
-                      <View className="bg-yellow-100 px-2 py-1 rounded mr-3">
-                        <Text className="text-yellow-800 text-xs">Popular</Text>
-                      </View>
-                    )}
-                    {selectedMethod === method.id ? (
-                      <View className="w-5 h-5 rounded-full bg-blue-500 items-center justify-center">
-                        <Check size={14} color="white" />
-                      </View>
-                    ) : null}
-                  </View>
+                <Icon size={22} color="#2563eb" />
+                <View className="flex-1 ml-3">
+                  <Text className="text-gray-900 font-medium">{method.name}</Text>
+                  <Text className="text-gray-500 text-xs">{method.description}</Text>
                 </View>
+                {method.popular && (
+                  <View className="bg-yellow-100 px-2 py-1 rounded-full ml-2">
+                    <Text className="text-yellow-700 text-xs font-bold">Popular</Text>
+                  </View>
+                )}
+                {selectedMethod === method.id && (
+                  <Check size={20} color="#10b981" className="ml-2" />
+                )}
               </TouchableOpacity>
             );
           })}
         </View>
 
-        <View className="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-6">
-          <Text className="font-medium text-gray-800 mb-3">Order Summary</Text>
-          
-          <View className="flex-row justify-between py-2 border-b border-gray-200">
+        {/* Order Summary */}
+        <View className="bg-white rounded-xl p-4 mb-6 border border-gray-200">
+          <Text className="text-base font-semibold text-gray-800 mb-2">Order Summary</Text>
+          <View className="flex-row justify-between mb-1">
             <Text className="text-gray-600">Plan Price</Text>
-            <Text className="font-medium">₹{plan?.price}</Text>
+            <Text className="text-gray-900 font-medium">₹{plan.price}</Text>
           </View>
-          
-          <View className="flex-row justify-between py-2 border-b border-gray-200">
+          <View className="flex-row justify-between mb-1">
             <Text className="text-gray-600">GST</Text>
-            <Text className="font-medium">₹{plan?.gst}</Text>
+            <Text className="text-gray-900 font-medium">₹{plan.gst}</Text>
           </View>
-          
-          <View className="flex-row justify-between pt-4 mt-2">
-            <Text className="font-semibold">Total Amount</Text>
-            <Text className="font-bold text-lg">
-              ₹{plan?.finalPrice}
-            </Text>
+          <View className="flex-row justify-between mt-2 border-t border-gray-100 pt-2">
+            <Text className="text-gray-900 font-bold">Total Amount</Text>
+            <Text className="text-blue-700 font-bold">₹{plan.finalPrice}</Text>
           </View>
         </View>
 
+        {/* Pay Button */}
         <TouchableOpacity
-          className={`w-full py-4 rounded-lg ${
-            selectedMethod && !loading 
-              ? 'bg-purple-600' 
-              : 'bg-gray-400'
-          }`}
-          disabled={!selectedMethod || loading}
-          onPress={proceedToPayment}
+          className="bg-blue-600 py-4 rounded-lg"
+          onPress={() => {/* handle payment */}}
         >
-          {loading ? (
-            <ActivityIndicator size="small" color="white" />
-          ) : (
-            <Text className="text-white font-bold text-center">
-              Proceed to Pay ₹{plan?.finalPrice}
-            </Text>
-          )}
+          <Text className="text-white text-center text-lg font-bold">
+            Proceed to Pay ₹{plan.finalPrice}
+          </Text>
         </TouchableOpacity>
-
-        <Text className="text-gray-500 text-xs text-center mt-4">
-          By completing your purchase, you agree to our Terms of Service
-        </Text>
       </View>
     </ScrollView>
   );
