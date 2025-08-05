@@ -13,16 +13,12 @@ import KeyFeaturesScreen from '../screens/KeyFeatures';
 import TechniciansScreen from '../screens/TechniciansScreen';
 import FranchisePlan from '../screens/FranchisePlan';
 import SubscriptionPage from '../screens/SubscriptionPage';
-import ViewAllPlans from '../screens/ViewAllPlans';
-import BuySubscriptionScreen from '../screens/BuySubscriptionScreen';
 import FranchiseReviewScreen from '../screens/ReviewScreen';
 import AddTechnician from '../components/technician/AddTechnician';
 import ViewTechnician from '../components/technician/ViewTechnician';
 import EditTechnician from '../components/technician/EditTechinician';
-import FranchisePlan from '../screens/FranchisePlan';
-import ViewAllPlans from '../screens/ViewAllPlans';
+import ViewAllPlansScreen from '../screens/ViewAllPlans';
 import BuySubscriptionScreen from '../screens/BuySubscriptionScreen';
-import SubscriptionPage from '../screens/SubscriptionPage';
 import PlanDetailsPage from '../screens/PlanDetailsScreen';
 // import DashboardScreen from '../screens/DashboardScreen';
 // import ProfileScreen from '../screens/ProfileScreen';
@@ -149,7 +145,7 @@ const AppNavigator: React.FC = () => {
         <Stack.Screen name="AddTechnician" component={AddTechnician} options={{ title: 'Add Techincian' }} />
         <Stack.Screen name="ViewTechnician" component={ViewTechnician} options={{ title: 'View Techincian' }} />
         <Stack.Screen name="EditTechnician" component={EditTechnician} options={{ title: 'Edit Techincian' }} />
-        <Stack.Screen name="ViewAllPlans" component={ViewAllPlans} options={{ title: 'View All Plans' }} />
+        <Stack.Screen name="ViewAllPlans" component={ViewAllPlansScreen} options={{ title: 'View All Plans' }} />
         <Stack.Screen name="BuySubscriptionScreen" component={BuySubscriptionScreen} options={{ title: 'Buy Subscription'}}/>
         <Stack.Screen name="AllSubscription" component={SubscriptionPage} options={{ title: 'All Subscription'}}/>
         <Stack.Screen name="PlanDetails" component={PlanDetailsPage} options={{ title: 'Plan Details'}}/>
