@@ -15,6 +15,10 @@ import FranchisePlan from '../screens/FranchisePlan';
 import SubscriptionPage from '../screens/SubscriptionPage';
 import ViewAllPlans from '../screens/ViewAllPlans';
 import BuySubscriptionScreen from '../screens/BuySubscriptionScreen';
+import FranchiseReviewScreen from '../screens/ReviewScreen';
+import AddTechnician from '../components/technician/AddTechnician';
+import ViewTechnician from '../components/technician/ViewTechnician';
+import EditTechnician from '../components/technician/EditTechinician';
 // import DashboardScreen from '../screens/DashboardScreen';
 // import ProfileScreen from '../screens/ProfileScreen';
 // import CategoryScreen from '../screens/CategoryScreen';
@@ -136,14 +140,11 @@ const AppNavigator: React.FC = () => {
         <Stack.Screen name="Technicians" component={TechniciansScreen} options={{ title: 'Technicians' }} />
         <Stack.Screen name="FranchisePlan" component={FranchisePlan} options={{ title: 'Franchise' }} />
         <Stack.Screen name="SubscriptionPage" component={SubscriptionPage} options={{ title: 'Subscription' }} />
-        <Stack.Screen name="ViewAllPlans" component={ViewAllPlans} options={{ title: 'All Subscriptions' }} />
-        
-        <Stack.Screen name="LeaveReview" component={ReviewScreen} options={{ title: 'Leave a Review' }} />
+        <Stack.Screen name="LeaveReview" component={FranchiseReviewScreen} options={{ title: 'Leave a Review' }} />
         <Stack.Screen name="AddTechnician" component={AddTechnician} options={{ title: 'Add Techincian' }} />
         <Stack.Screen name="ViewTechnician" component={ViewTechnician} options={{ title: 'View Techincian' }} />
         <Stack.Screen name="EditTechnician" component={EditTechnician} options={{ title: 'Edit Techincian' }} />
         <Stack.Screen name="ViewAllPlans" component={ViewAllPlans} options={{ title: 'View All Plans' }} />
-        <Stack.Screen name="FranchisePlan" component={FranchisePlan} options={{ title: 'Franchise Plan' }} />
         <Stack.Screen name="BuySubscription" component={BuySubscriptionScreen} options={{ title: 'Buy Subscription'}}/>
 
 

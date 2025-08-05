@@ -226,6 +226,7 @@ const SubscriptionPage: React.FC = () => {
         </View>
 
         {/* CTA Button */}
+        <View>
         <TouchableOpacity
           className="bg-blue-500 py-4 rounded-xl mt-8"
           onPress={() => navigation.navigate('BuyPlan', { plan })}

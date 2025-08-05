@@ -103,30 +103,35 @@ const CategoryScreen: React.FC = () => {
               .map((category) => {
                 const bgColor = getRandomBgColor();
                 return (
-                  <TouchableOpacity
-                    key={category._id}
-                    className="w-[47%] bg-white rounded-lg border border-gray-200 p-4 items-center"
-                    style={styles.categoryCard}
-                    onPress={() =>
-                      navigation.navigate("Technicians", {
-                        categoryId: category._id,
-                      })
-                    }
-                  >
+                  // <TouchableOpacity
+                  //   key={category._id}
+                    // className="w-[47%] bg-white rounded-lg border border-gray-200 p-4 items-center"
+                    // style={styles.categoryCard}
+                  //   onPress={() =>
+                  //     navigation.navigate("Technicians", {
+                  //       categoryId: category._id,
+                  //     })
+                  //   }
+                  // >
+                  <View
+                  key={category._id}
+                  style={styles.categoryCard}
+                  className="w-[47%] bg-white rounded-lg border border-gray-200 p-4 items-center">
                     <View
                       className={`w-20 h-20 ${bgColor} rounded-full items-center justify-center mb-4 overflow-hidden`}
-                    >
+                      >
                       <Image
                         source={{ uri: category.category_image }}
                         alt={category.category_name}
                         className="w-12 h-12"
                         style={styles.categoryImage}
-                      />
+                        />
                     </View>
                     <Text className="text-sm font-medium text-gray-700 text-center leading-tight">
                       {category.category_name}
                     </Text>
-                  </TouchableOpacity>
+                  </View>
+                  // </TouchableOpacity>
                 );
               })}
           </View>
