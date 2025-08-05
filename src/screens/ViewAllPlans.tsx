@@ -243,7 +243,7 @@ const ViewAllPlansScreen: React.FC = () => {
                 
                 <TouchableOpacity
                   className="flex-1 bg-purple-600 rounded-lg py-3"
-                  onPress={() => navigation.navigate('BuySubscription' as never, { plan } as never)}
+                  onPress={() => navigation.navigate('BuySubscriptionScreen' as never, { plan } as never)}
                 >
                   <Text className="text-white font-medium text-center">
                     Buy Now
